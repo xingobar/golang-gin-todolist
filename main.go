@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"golang-gin-todolist/services/tag_service"
 	"net/http"
 )
 
@@ -11,13 +12,23 @@ func main() {
 	r := gin.Default()
 
 	// 標籤
-	r.Group("/tags")
+	tags := r.Group("/tags")
 	{
 		// 新增標籤
-		r.POST("/create", func(context *gin.Context) {
+		tags.POST("/create", func(context *gin.Context) {
+			tag := tag_service.Tag{Title:context.PostForm("title")}
+			err := tag.AddTag()
+			if err != nil {
+				context.JSON(http.StatusBadRequest, gin.H{
+					"error": err.Error(),
+				})
+				return
+			}
 			context.JSON(http.StatusOK, gin.H{
 				"status": "add successful",
 			})
 		})
 	}
+
+	r.Run()
 }
