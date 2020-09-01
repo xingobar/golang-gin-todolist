@@ -5,6 +5,7 @@ import (
 	"golang-gin-todolist/pkg/e"
 	"golang-gin-todolist/services/tag_service"
 	"net/http"
+	"strconv"
 )
 
 type tagController struct {
@@ -57,5 +58,31 @@ func (t *tagController) GetAll(context *gin.Context){
 	context.JSON(http.StatusOK, gin.H{
 		"code": e.SUCCESS,
 		"data": tags,
+	})
+}
+
+func (t *tagController) GetById(context *gin.Context) {
+	id, err := strconv.Atoi(context.Param("id"))
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{
+			"code": e.ERROR,
+			"msg": e.GetMsg(e.ERROR),
+		})
+		return
+	}
+
+	tag := t.service.GetById(int(id))
+
+	if tag == nil {
+		context.JSON(http.StatusNotFound, gin.H{
+			"code": e.NOT_EXISTS_TAG,
+			"msg": e.GetMsg(e.NOT_EXISTS_TAG),
+		})
+		return
+	}
+
+	context.JSON(http.StatusOK, gin.H{
+		"code": e.SUCCESS,
+		"msg": tag,
 	})
 }

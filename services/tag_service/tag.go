@@ -42,3 +42,11 @@ func (s *TagService) GetTags() []models.Tag {
 	}
 	return tags
 }
+
+func (s *TagService) GetById(id int) *models.Tag {
+	tag, err := s.tag.GetById(id)
+	if err != nil {
+		return nil
+	}
+	return tag
+}

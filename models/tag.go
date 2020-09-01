@@ -38,3 +38,12 @@ func (t *Tag) GetTags() ([]Tag, error) {
 	}
 	return tags, nil
 }
+
+// 根據編號取得標籤
+func (t *Tag) GetById (id int) (*Tag, error) {
+	var tag Tag
+	if err := Db.Where("id = ?" , id).First(&tag).Error; err != nil {
+		return nil, err
+	}
+	return &tag, nil
+}

@@ -22,6 +22,9 @@ func main() {
 
 		// 取得所有標籤
 		tags.GET("/", tagController.GetAll)
+
+		// 取得單一標籤
+		tags.GET("/edit/:id", tagController.GetById)
 	}
 
 	r.Run()
