@@ -7,6 +7,24 @@ type Tag struct {
 	Title string
 }
 
+type TagService struct {
+	tag *models.Tag
+}
+
+func NewTagService() *TagService{
+	return &TagService{
+		tag: &models.Tag{},
+	}
+}
+
+func (s *TagService) CreateTag(title string) (error){
+	err := s.tag.Add(title)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (t *Tag) AddTag() error {
 	return models.AddTag(t.Title)
 }

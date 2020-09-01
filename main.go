@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"golang-gin-todolist/controllers"
 	"golang-gin-todolist/services/tag_service"
 	"net/http"
 )
@@ -10,6 +11,9 @@ import (
 
 func main() {
 	r := gin.Default()
+
+	tagController := controllers.NewTagController()
+	r.POST("/create", tagController.Create)
 
 	// 標籤
 	tags := r.Group("/tags")
