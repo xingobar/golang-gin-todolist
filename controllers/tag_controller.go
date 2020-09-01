@@ -20,6 +20,16 @@ func NewTagController() *tagController {
 
 func (t *tagController) Create(context *gin.Context) {
 	title := context.PostForm("title")
+
+	// 檢查標籤是否存在
+	exists := t.service.ExistByName(title)
+	if exists {
+		context.JSON(http.StatusBadRequest, gin.H{
+			"code": e.ERROR_EXIST_TAG,
+			"msg": e.GetMsg(e.ERROR_EXIST_TAG),
+		})
+		return
+	}
 	err := t.service.CreateTag(title)
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{

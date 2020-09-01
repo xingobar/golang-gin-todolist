@@ -15,3 +15,17 @@ func (Tag) TableName() string {
 func (t *Tag) Add(title string) error{
 	return Db.Create(&Tag{Title:title}).Error
 }
+
+// 根據名稱去檢查標籤是否存在
+func (t *Tag) ExistByName(title string) (bool, error){
+	var tag Tag
+	if err := Db.Select("id").Where("title = ? ", title).First(&tag).Error; err != nil {
+		return false, err
+	}
+
+	if tag.Id > 0 {
+		return true, nil
+	}
+
+	return false, nil
+}

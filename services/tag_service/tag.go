@@ -25,3 +25,12 @@ func (s *TagService) CreateTag(title string) (error){
 	}
 	return nil
 }
+
+// 判斷標籤名稱是否存在
+func (s *TagService) ExistByName(title string) bool{
+	exists, err := s.tag.ExistByName(title)
+	if err != nil {
+		return false
+	}
+	return exists
+}
