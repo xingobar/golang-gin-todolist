@@ -25,6 +25,9 @@ func main() {
 
 		// 取得單一標籤
 		tags.GET("/edit/:id", tagController.GetById)
+
+		// 刪除單一標籤
+		tags.DELETE("/delete/:id", tagController.DeleteById)
 	}
 
 	r.Run()

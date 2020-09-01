@@ -19,6 +19,7 @@ func NewTagController() *tagController {
 	}
 }
 
+// 新增標籤
 func (t *tagController) Create(context *gin.Context) {
 	title := context.PostForm("title")
 
@@ -61,6 +62,7 @@ func (t *tagController) GetAll(context *gin.Context){
 	})
 }
 
+// 取得單一標籤
 func (t *tagController) GetById(context *gin.Context) {
 	id, err := strconv.Atoi(context.Param("id"))
 	if err != nil {
@@ -84,5 +86,29 @@ func (t *tagController) GetById(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{
 		"code": e.SUCCESS,
 		"msg": tag,
+	})
+}
+
+// 刪除標籤
+func (t *tagController) DeleteById(context *gin.Context) {
+	id, err := strconv.Atoi(context.Param("id"))
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{
+			"code": e.INVALID_REQUEST,
+			"msg": e.GetMsg(e.INVALID_REQUEST),
+		})
+		return
+	}
+
+	if ok := t.service.DeleteById(id); !ok {
+		context.JSON(http.StatusBadRequest, gin.H{
+			"code": e.INVALID_REQUEST,
+			"msg": e.GetMsg(e.INVALID_REQUEST),
+		})
+		return
+	}
+	context.JSON(http.StatusOK, gin.H{
+		"code": e.SUCCESS,
+		"msg": e.GetMsg(e.SUCCESS),
 	})
 }

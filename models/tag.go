@@ -47,3 +47,10 @@ func (t *Tag) GetById (id int) (*Tag, error) {
 	}
 	return &tag, nil
 }
+
+func (t *Tag) DeleteById(id int) (bool, error) {
+	if err := Db.Where("id = ?", id).Delete(&Tag{}).Error; err != nil {
+		return false, err
+	}
+	return true, nil
+}

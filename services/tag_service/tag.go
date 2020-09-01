@@ -50,3 +50,11 @@ func (s *TagService) GetById(id int) *models.Tag {
 	}
 	return tag
 }
+
+func (s *TagService) DeleteById(id int) bool {
+	_, err := s.tag.DeleteById(id)
+	if err != nil {
+		return false
+	}
+	return true
+}
