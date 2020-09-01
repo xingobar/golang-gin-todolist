@@ -24,7 +24,3 @@ func (s *TagService) CreateTag(title string) (error){
 	}
 	return nil
 }
-
-func (t *Tag) AddTag() error {
-	return models.AddTag(t.Title)
-}

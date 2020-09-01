@@ -15,16 +15,3 @@ func (Tag) TableName() string {
 func (t *Tag) Add(title string) error{
 	return Db.Create(&Tag{Title:title}).Error
 }
-
-/**
-新增標籤
- */
-func AddTag(title string) error {
-	tag := Tag{
-		Title: title,
-	}
-	if err := Db.Create(&tag).Error; err != nil {
-		return err
-	}
-	return nil
-}
