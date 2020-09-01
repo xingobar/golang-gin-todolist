@@ -58,3 +58,17 @@ func (s *TagService) DeleteById(id int) bool {
 	}
 	return true
 }
+
+// 更新標籤名稱
+func (s *TagService) UpdateById(id int, title string) bool {
+	_, err := s.tag.GetById(id)
+	if err != nil {
+		return false
+	}
+	var tag models.Tag
+	tag.Title = title
+	if _, err := s.tag.UpdateById(id, tag); err != nil {
+		return false
+	}
+	return true
+}

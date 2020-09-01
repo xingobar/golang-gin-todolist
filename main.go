@@ -28,6 +28,9 @@ func main() {
 
 		// 刪除單一標籤
 		tags.DELETE("/delete/:id", tagController.DeleteById)
+
+		// 更新標籤名稱
+		tags.PUT("/update/:id", tagController.UpdateById)
 	}
 
 	r.Run()

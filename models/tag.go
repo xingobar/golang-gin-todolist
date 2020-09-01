@@ -48,8 +48,17 @@ func (t *Tag) GetById (id int) (*Tag, error) {
 	return &tag, nil
 }
 
+// 刪除標籤
 func (t *Tag) DeleteById(id int) (bool, error) {
 	if err := Db.Where("id = ?", id).Delete(&Tag{}).Error; err != nil {
+		return false, err
+	}
+	return true, nil
+}
+
+// 更新標籤資訊
+func (t *Tag) UpdateById(id int, data interface{}) (bool, error) {
+	if err := Db.Model(&Tag{}).Where("id = ?", id).Update(data).Error; err != nil {
 		return false, err
 	}
 	return true, nil

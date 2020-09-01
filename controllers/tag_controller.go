@@ -112,3 +112,28 @@ func (t *tagController) DeleteById(context *gin.Context) {
 		"msg": e.GetMsg(e.SUCCESS),
 	})
 }
+
+// 更新標籤名稱
+func (t *tagController) UpdateById(context *gin.Context) {
+	id, err := strconv.Atoi(context.Param("id"))
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{
+			"code": e.INVALID_REQUEST,
+			"msg": e.GetMsg(e.INVALID_REQUEST),
+		})
+		return
+	}
+
+	if ok := t.service.UpdateById(id, context.PostForm("title")); !ok {
+		context.JSON(http.StatusBadRequest, gin.H{
+			"code": e.INVALID_REQUEST,
+			"msg": e.GetMsg(e.INVALID_REQUEST),
+		})
+		return
+	}
+
+	context.JSON(http.StatusOK, gin.H{
+		"code": e.SUCCESS,
+		"msg": e.GetMsg(e.SUCCESS),
+	})
+}
