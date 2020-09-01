@@ -3,7 +3,7 @@ package models
 import "github.com/jinzhu/gorm"
 
 type Tag struct {
-	Id int `gorm:"primaryKey";"column:id;autoIncrement"`
+	ID int `gorm:"primaryKey";"column:id;autoIncrement"`
 	Title string `gorm: "column:title";"size:255" `
 	gorm.Model
 }
@@ -23,9 +23,18 @@ func (t *Tag) ExistByName(title string) (bool, error){
 		return false, err
 	}
 
-	if tag.Id > 0 {
+	if tag.ID > 0 {
 		return true, nil
 	}
 
 	return false, nil
+}
+
+// 取得標籤
+func (t *Tag) GetTags() ([]Tag, error) {
+	var tags []Tag
+	if err := Db.Find(&tags).Error; err != nil {
+		return nil, err
+	}
+	return tags, nil
 }

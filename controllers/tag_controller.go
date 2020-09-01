@@ -43,3 +43,19 @@ func (t *tagController) Create(context *gin.Context) {
 		"msg": e.GetMsg(e.SUCCESS),
 	})
 }
+
+// 取得所有標籤
+func (t *tagController) GetAll(context *gin.Context){
+	tags := t.service.GetTags()
+	if tags == nil {
+		context.JSON(http.StatusBadRequest, gin.H{
+			"code": e.ERROR,
+			"msg": e.GetMsg(e.ERROR),
+		})
+		return
+	}
+	context.JSON(http.StatusOK, gin.H{
+		"code": e.SUCCESS,
+		"data": tags,
+	})
+}

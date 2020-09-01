@@ -19,6 +19,9 @@ func main() {
 
 		// 新增標籤
 		tags.POST("/create", tagController.Create)
+
+		// 取得所有標籤
+		tags.GET("/", tagController.GetAll)
 	}
 
 	r.Run()

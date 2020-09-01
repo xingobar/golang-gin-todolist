@@ -34,3 +34,11 @@ func (s *TagService) ExistByName(title string) bool{
 	}
 	return exists
 }
+
+func (s *TagService) GetTags() []models.Tag {
+	tags, err := s.tag.GetTags()
+	if err != nil {
+		return nil
+	}
+	return tags
+}
