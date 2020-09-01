@@ -17,6 +17,7 @@ func NewTagService() *TagService{
 	}
 }
 
+// 新增標籤
 func (s *TagService) CreateTag(title string) (error){
 	err := s.tag.Add(title)
 	if err != nil {

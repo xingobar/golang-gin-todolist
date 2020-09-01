@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
+	"golang-gin-todolist/pkg/e"
 	"golang-gin-todolist/services/tag_service"
 	"net/http"
 )
@@ -22,11 +23,13 @@ func (t *tagController) Create(context *gin.Context) {
 	err := t.service.CreateTag(title)
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{
-			"err": err.Error(),
+			"code": e.ERROR,
+			"msg": e.GetMsg(e.ERROR),
 		})
 		return
 	}
 	context.JSON(http.StatusOK, gin.H{
-		"status": "create",
+		"code": e.SUCCESS,
+		"msg": e.GetMsg(e.SUCCESS),
 	})
 }
