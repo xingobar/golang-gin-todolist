@@ -33,5 +33,13 @@ func main() {
 		tags.PUT("/update/:id", tagController.UpdateById)
 	}
 
+	// 文章
+	articles := r.Group("/article")
+	{
+		articleController := controllers.NewArticleController()
+		// 新增文章
+		articles.POST("/create", articleController.Create)
+	}
+
 	r.Run()
 }
