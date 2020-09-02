@@ -18,8 +18,12 @@ func NewArticleService() *ArticleService {
 
 // 新增文章
 func (s *ArticleService) Create(article models.Article, tags []models.Tag) bool {
-	if err := s.article.Create(article, tags); err != nil {
+	tx := models.Db.Begin()
+	tx.Create(&article)
+	if err := tx.Model(&article).Association("Tags").Append(tags).Error; err != nil {
+		tx.Rollback()
 		return false
 	}
+	tx.Commit()
 	return true
 }
