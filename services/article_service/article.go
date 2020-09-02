@@ -17,7 +17,7 @@ func NewArticleService() *ArticleService {
 	}
 }
 
-func (s *ArticleService) Create(article models.Article, tags []string) bool {
+func (s *ArticleService) Create(article models.Article, tags []models.Tag) bool {
 
 	if err := s.article.Create(article, tags); err != nil {
 		fmt.Println(err.Error())

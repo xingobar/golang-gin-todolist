@@ -64,3 +64,11 @@ func (t *Tag) UpdateById(id int, data interface{}) (bool, error) {
 	}
 	return true, nil
 }
+
+func (t *Tag) GetByIds(id []string) ([]Tag, error) {
+	var tag []Tag
+	if err := Db.Where("id in (?)", id).Find(&tag).Error; err != nil {
+		return nil, err
+	}
+	return tag, nil
+}

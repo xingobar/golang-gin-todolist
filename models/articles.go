@@ -1,7 +1,6 @@
 package models
 
 import (
-	"fmt"
 	"github.com/jinzhu/gorm"
 )
 
@@ -19,12 +18,9 @@ func (Article) TableName() string{
 }
 
 // 新增文章
-func (a *Article) Create(article Article, tags []string) (error) {
+func (a *Article) Create(article Article, tags []Tag) (error) {
 	Db.Create(&article)
-	fmt.Println("id: ", article.ID)
-	tag := &Tag{}
-	t ,_ := tag.GetById(1)
-	if err := Db.Model(&article).Association("Tags").Append(t).Error; err != nil {
+	if err := Db.Model(&article).Association("Tags").Append(tags).Error; err != nil {
 		return err
 	}
 	return nil

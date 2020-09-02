@@ -72,3 +72,11 @@ func (s *TagService) UpdateById(id int, title string) bool {
 	}
 	return true
 }
+
+func (s *TagService) GetByIds(id []string) []models.Tag{
+	tags, err := s.tag.GetByIds(id)
+	if err != nil {
+		return nil
+	}
+	return tags
+}
