@@ -41,5 +41,15 @@ func (c *articleController) Create(context *gin.Context) {
 		return
 	}
 
-	c.service.Create(article, t)
+	if ok := c.service.Create(article, t); !ok {
+		context.JSON(http.StatusBadRequest, gin.H{
+			"code": e.INVALID_REQUEST,
+			"msg": e.GetMsg(e.INVALID_REQUEST),
+		})
+		return
+	}
+	context.JSON(http.StatusOK, gin.H{
+		"code": e.SUCCESS,
+		"msg": e.GetMsg(e.SUCCESS),
+	})
 }

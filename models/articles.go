@@ -19,9 +19,12 @@ func (Article) TableName() string{
 
 // 新增文章
 func (a *Article) Create(article Article, tags []Tag) (error) {
-	Db.Create(&article)
-	if err := Db.Model(&article).Association("Tags").Append(tags).Error; err != nil {
+	tx := Db.Begin()
+	tx.Create(&article)
+	if err := tx.Model(&article).Association("Tags").Append(tags).Error; err != nil {
+		tx.Rollback()
 		return err
 	}
+	tx.Commit()
 	return nil
 }
