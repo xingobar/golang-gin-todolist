@@ -21,6 +21,7 @@ func NewArticleController() *articleController{
 	}
 }
 
+// 新增文章
 func (c *articleController) Create(context *gin.Context) {
 	var article models.Article
 
@@ -51,5 +52,14 @@ func (c *articleController) Create(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{
 		"code": e.SUCCESS,
 		"msg": e.GetMsg(e.SUCCESS),
+	})
+}
+
+func (c *articleController) GetById(context *gin.Context) {
+	article := c.service.GetById(context.Param("id"))
+
+	context.JSON(http.StatusOK, gin.H{
+		"code": e.SUCCESS,
+		"msg": article,
 	})
 }

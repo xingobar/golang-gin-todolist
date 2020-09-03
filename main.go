@@ -39,6 +39,9 @@ func main() {
 		articleController := controllers.NewArticleController()
 		// 新增文章
 		articles.POST("/create", articleController.Create)
+
+		// 取得文章
+		articles.GET("/edit/:id", articleController.GetById)
 	}
 
 	r.Run()

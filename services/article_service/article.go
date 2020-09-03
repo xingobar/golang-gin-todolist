@@ -27,3 +27,7 @@ func (s *ArticleService) Create(article models.Article, tags []models.Tag) bool 
 	tx.Commit()
 	return true
 }
+
+func (s *ArticleService) GetById(id string) *models.Article {
+	return s.article.GetById(id)
+}
