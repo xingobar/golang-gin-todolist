@@ -33,12 +33,6 @@ func (s *ArticleService) GetById(id string) (*models.Article, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	var tags []models.Tag
-	if err := models.Db.Model(&article).Association("Tags").Find(&tags).Error; err != nil {
-		return nil, err;
-	}
-	article.Tags = tags
 	return article, nil
 }
 

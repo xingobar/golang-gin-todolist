@@ -32,7 +32,7 @@ func (a *Article) Create(article Article, tags []Tag) (error) {
 // 取得單一文章
 func (a *Article) GetById(id string) (*Article, error) {
 	var article Article
-	if err := Db.Where("id = ?", id).First(&article).Error; err != nil {
+	if err := Db.Preload("Tags").Where("id = ?", id).First(&article).Error; err != nil {
 		return nil, err
 	}
 	return &article, nil
