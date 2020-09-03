@@ -56,7 +56,15 @@ func (c *articleController) Create(context *gin.Context) {
 }
 
 func (c *articleController) GetById(context *gin.Context) {
-	article := c.service.GetById(context.Param("id"))
+	article, err := c.service.GetById(context.Param("id"))
+
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{
+			"code": e.INVALID_REQUEST,
+			"msg": e.GetMsg(e.INVALID_REQUEST),
+		})
+		return
+	}
 
 	context.JSON(http.StatusOK, gin.H{
 		"code": e.SUCCESS,
