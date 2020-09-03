@@ -5,7 +5,7 @@ import (
 )
 
 type Article struct {
-	ID int `gorm:"primary_key;AUTO_INCREMENT"`
+	ID int `gorm:"primary_key,AUTO_INCREMENT"`
 	Title string `gorm:"column:title;size:255"`
 	Content string `gorm:"column:content"`
 	UserId int `gorm:"column:user_id"`
@@ -36,5 +36,13 @@ func (a *Article) GetById(id string) (*Article, error) {
 		return nil, err
 	}
 	return &article, nil
+}
+
+func (a *Article) GetAll() ([]Article, error) {
+	var articles []Article
+	if err := Db.Preload("Tags").Find(&articles).Error; err != nil {
+		return nil, err
+	}
+	return articles, nil
 }
 

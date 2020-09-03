@@ -42,6 +42,9 @@ func main() {
 
 		// 取得文章
 		articles.GET("/edit/:id", articleController.GetById)
+
+		// 取得所有文章
+		articles.GET("/", articleController.GetAll)
 	}
 
 	r.Run()

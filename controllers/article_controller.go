@@ -71,3 +71,20 @@ func (c *articleController) GetById(context *gin.Context) {
 		"msg": article,
 	})
 }
+
+func (c *articleController) GetAll(context *gin.Context) {
+	articles, err := c.service.GetAll()
+
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{
+			"code": e.INVALID_REQUEST,
+			"msg": e.GetMsg(e.INVALID_REQUEST),
+		})
+		return
+	}
+
+	context.JSON(http.StatusOK, gin.H{
+		"code": e.SUCCESS,
+		"msg": articles,
+	})
+}

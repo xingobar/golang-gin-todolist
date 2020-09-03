@@ -41,3 +41,11 @@ func (s *ArticleService) GetById(id string) (*models.Article, error) {
 	article.Tags = tags
 	return article, nil
 }
+
+func (s *ArticleService) GetAll() ([]models.Article, error) {
+	articles, err  := s.article.GetAll()
+	if err != nil {
+		return nil, err
+	}
+	return articles, nil
+}
