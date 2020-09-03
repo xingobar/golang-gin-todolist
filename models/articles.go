@@ -32,7 +32,10 @@ func (a *Article) Create(article Article, tags []Tag) (error) {
 // 取得單一文章
 func (a *Article) GetById(id string) *Article {
 	var article Article
-	Db.Where("id = ?", id).First(&article)
+	if err := Db.Where("id = ?", id).First(&article).Error; err != nil {
+		return nil
+	}
+	return &article
 
 	var tag []Tag
 	if err := Db.Model(&article).Association("Tags").Find(&tag).Error; err != nil {

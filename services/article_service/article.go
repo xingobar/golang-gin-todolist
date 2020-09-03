@@ -29,5 +29,15 @@ func (s *ArticleService) Create(article models.Article, tags []models.Tag) bool 
 }
 
 func (s *ArticleService) GetById(id string) *models.Article {
-	return s.article.GetById(id)
+	article := s.article.GetById(id)
+	if article == nil {
+		return nil
+	}
+
+	var tags []models.Tag
+	if err := models.Db.Model(&article).Association("Tags").Find(&tags).Error; err != nil {
+		return nil;
+	}
+	article.Tags = tags
+	return article
 }
