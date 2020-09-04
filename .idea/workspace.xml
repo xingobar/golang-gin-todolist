@@ -3,9 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="a6e2ffb0-8114-430d-86ce-36667f1eb10d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/controllers/user_controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/user_controller.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gin-bin" beforeDir="false" afterPath="$PROJECT_DIR$/gin-bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/user_service/user_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/services/user_service/user_service.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation/user/index.go" beforeDir="false" afterPath="$PROJECT_DIR$/validation/user/index.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -27,11 +24,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/controllers/user_controller.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="83">
-              <caret line="31" column="38" selection-start-line="31" selection-start-column="38" selection-end-line="31" selection-end-column="38" />
+            <state relative-caret-position="145">
+              <caret line="28" column="4" selection-start-line="28" selection-start-column="4" selection-end-line="28" selection-end-column="4" />
               <folding>
                 <element signature="e#21#89#0" expanded="true" />
               </folding>
@@ -39,7 +36,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/validation/user/index.go">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="289">
@@ -118,8 +115,8 @@
         <option value="$PROJECT_DIR$/validation/user/register.go" />
         <option value="$PROJECT_DIR$/validation/index.go" />
         <option value="$PROJECT_DIR$/services/user_service/user_service.go" />
-        <option value="$PROJECT_DIR$/controllers/user_controller.go" />
         <option value="$PROJECT_DIR$/validation/user/index.go" />
+        <option value="$PROJECT_DIR$/controllers/user_controller.go" />
       </list>
     </option>
   </component>
@@ -511,6 +508,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/validation/user/index.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="93" selection-start-line="17" selection-start-column="93" selection-end-line="17" selection-end-column="93" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/services/user_service/user_service.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="314">
@@ -523,18 +527,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/user_controller.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="83">
-          <caret line="31" column="38" selection-start-line="31" selection-start-column="38" selection-end-line="31" selection-end-column="38" />
+        <state relative-caret-position="145">
+          <caret line="28" column="4" selection-start-line="28" selection-start-column="4" selection-end-line="28" selection-end-column="4" />
           <folding>
             <element signature="e#21#89#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/validation/user/index.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" column="93" selection-start-line="17" selection-start-column="93" selection-end-line="17" selection-end-column="93" />
         </state>
       </provider>
     </entry>

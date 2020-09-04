@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator"
 	"golang-gin-todolist/models"
@@ -27,9 +26,6 @@ func (c *userController) Register(ctx *gin.Context) {
 
 	var v user.RegisterValidation
 
-	//var user models.User
-	fmt.Println(ctx.PostForm("confirm_password"))
-	fmt.Println(ctx.PostForm("password"))
 	if err := ctx.ShouldBind(&v); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"code": e.INVALID_REQUEST,
