@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator"
 	"golang-gin-todolist/pkg/e"
+	"golang-gin-todolist/validation"
 	"golang-gin-todolist/validation/user"
 	"net/http"
 )
@@ -25,12 +26,10 @@ func (c *userController) Register(ctx *gin.Context) {
 	if err := ctx.ShouldBind(&v); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"code": e.INVALID_REQUEST,
-			"msg": v.GetError(err.(validator.ValidationErrors)),
+			"msg": validation.GetError(err.(validator.ValidationErrors), user.Message),
 		})
 		return
 	}
-
-	//fmt.Println(user)
 
 	ctx.JSON(http.StatusOK, gin.H{
 		"code": e.SUCCESS,
