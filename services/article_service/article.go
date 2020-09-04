@@ -53,18 +53,11 @@ func (s *ArticleService) DeleteById(id string) error {
 		return err
 	}
 
-	tx := models.Db.Begin()
-
-	if err := tx.Model(&article).
+	// 刪除文章
+	if err := models.Db.Model(&article).Delete(&article).
 		Association("Tags").
 		Delete(&article.Tags).Error; err != nil {
-			tx.Rollback()
 			return err
 	}
-	if err := tx.Where("id = ?", id).Delete(&article).Error; err != nil {
-		tx.Rollback()
-		return err
-	}
-	tx.Commit()
 	return nil
 }
