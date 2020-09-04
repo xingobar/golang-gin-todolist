@@ -58,7 +58,13 @@ func main() {
 	users := r.Group("/users")
 	{
 		articleController := controllers.NewArticleController()
+		userController := controllers.NewUserController()
+
+		// 會員文章
 		users.GET("/article/:id", articleController.GetByUserId)
+
+		// 註冊
+		users.POST("/", userController.Register)
 	}
 
 	r.Run()
