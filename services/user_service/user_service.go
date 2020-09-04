@@ -1,15 +1,20 @@
 package user_service
 
-import "golang-gin-todolist/models"
+import (
+	"golang-gin-todolist/models"
+)
 
-type userService struct {
+type UserService struct {
 
 }
 
-func NewUserService() *userService {
-	return &userService{}
+func NewUserService() *UserService {
+	return &UserService{}
 }
 
-func (s *userService) Register(user models.User) {
-
+func (s *UserService) Register(user models.User) error{
+	if err := models.Db.Create(&user).Error; err != nil {
+		return err
+	}
+	return nil
 }
