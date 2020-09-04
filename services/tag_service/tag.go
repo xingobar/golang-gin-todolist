@@ -1,6 +1,8 @@
 package tag_service
 
-import "golang-gin-todolist/models"
+import (
+	"golang-gin-todolist/models"
+)
 
 type Tag struct {
 	Id int

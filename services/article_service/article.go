@@ -45,3 +45,19 @@ func (s *ArticleService) GetAll() ([]models.Article, error) {
 	}
 	return articles, nil
 }
+
+// 根據編號刪除文章
+func (s *ArticleService) DeleteById(id string) error {
+	article, err := s.article.GetById(id)
+	if err != nil {
+		return err
+	}
+
+	if err := models.Db.Model(&article).
+		Association("Tags").
+		Delete(&article.Tags).Error; err != nil {
+			return err
+	}
+	models.Db.Where("id = ?", id).Delete(&article)
+	return nil
+}

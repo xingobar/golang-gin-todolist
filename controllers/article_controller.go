@@ -89,3 +89,17 @@ func (c *articleController) GetAll(context *gin.Context) {
 		"msg": articles,
 	})
 }
+
+func (c *articleController) DeleteById(context *gin.Context) {
+	if err := c.service.DeleteById(context.Param("id")); err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{
+			"code": e.INVALID_REQUEST,
+			"msg": e.GetMsg(e.INVALID_REQUEST),
+		})
+		return
+	}
+	context.JSON(http.StatusOK, gin.H{
+		"code": e.SUCCESS,
+		"msg": e.GetMsg(e.SUCCESS),
+	})
+}

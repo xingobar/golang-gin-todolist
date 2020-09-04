@@ -1,12 +1,16 @@
 package models
 
-import "github.com/jinzhu/gorm"
+import (
+	"time"
+)
 
 type Tag struct {
-	ID int `gorm:"primary_key;AUTO_INCREMENT"`
-	Title string `gorm:"column:title;size:255" `
-	Articles []Article `gorm:"many2many:article_tags"`
-	gorm.Model
+	ID uint `gorm:"primaryKey;autoIncrement"`
+	Title string
+	Articles []Article `gorm:"many2many:article_tags;"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt *time.Time `sql:"index"`
 }
 
 func (Tag) TableName() string {

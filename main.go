@@ -10,7 +10,12 @@ import (
 func main() {
 	r := gin.Default()
 
-
+	//r.GET("/run", func(context *gin.Context) {
+	//	fmt.Println("test")
+	//	models.Db.AutoMigrate(&models.Article{}, &models.Tag{})
+	//	//models.Db.CreateTable(&models.Tag{})
+	//	fmt.Printf("test")
+	//})
 
 	// 標籤
 	tags := r.Group("/tags")
@@ -45,6 +50,8 @@ func main() {
 
 		// 取得所有文章
 		articles.GET("/", articleController.GetAll)
+
+		articles.DELETE("/:id", articleController.DeleteById)
 	}
 
 	r.Run()
