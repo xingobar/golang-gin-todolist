@@ -6,6 +6,7 @@ var MsgFiles = map[int]string {
 	INVALID_REQUEST: "參數有誤",
 	ERROR_EXIST_TAG: "標籤已存在",
 	NOT_EXISTS_TAG: "標籤不存在",
+	EXISTS_EMAIL: "帳號存在",
 }
 
 func GetMsg(code int) string {

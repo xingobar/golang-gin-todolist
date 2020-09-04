@@ -40,7 +40,26 @@ func (c *userController) Register(ctx *gin.Context) {
 		Password: v.Password,
 	}
 
+	// 檢查帳號是否存在
+	ok, err := c.service.CheckExistByEmail(v.Email)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"code": e.INVALID_REQUEST,
+			"msg": e.GetMsg(e.INVALID_REQUEST),
+		})
+		return
+	}
 
+	// 帳號存在
+	if !ok {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"code": e.EXISTS_EMAIL,
+			"msg": e.GetMsg(e.EXISTS_EMAIL),
+		})
+		return
+	}
+
+	// 註冊
 	if err := c.service.Register(user); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"code": e.INVALID_REQUEST,
