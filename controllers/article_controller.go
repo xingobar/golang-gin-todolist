@@ -103,3 +103,22 @@ func (c *articleController) DeleteById(context *gin.Context) {
 		"msg": e.GetMsg(e.SUCCESS),
 	})
 }
+
+// 取得會員文章
+func (c *articleController) GetByUserId (ctx *gin.Context) {
+
+	article, err := c.service.GetByUserId(ctx.Param("id"))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"code": e.INVALID_REQUEST,
+			"msg": e.GetMsg(e.INVALID_REQUEST),
+		})
+		return
+	}
+
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"code": e.SUCCESS,
+		"msg": article,
+	})
+}

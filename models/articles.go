@@ -3,14 +3,14 @@ package models
 import "time"
 
 type Article struct {
-	ID uint `gorm:"primaryKey;autoIncrement"`
-	Title string
-	Content string
-	UserId int
-	Tags []Tag `gorm:"many2many:article_tags;"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt *time.Time `sql:"index"`
+	ID uint `gorm:"primaryKey;autoIncrement" json:"id" `
+	Title string `json:"title"`
+	Content string `json:"content"`
+	UserId int	`json:"user_id"`
+	Tags []Tag `gorm:"many2many:article_tags;" json:"tags"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+	DeletedAt *time.Time `sql:"index" json:"deleted_at"`
 }
 
 func (Article) TableName() string{

@@ -54,5 +54,12 @@ func main() {
 		articles.DELETE("/:id", articleController.DeleteById)
 	}
 
+	// 會員資訊
+	users := r.Group("/users")
+	{
+		articleController := controllers.NewArticleController()
+		users.GET("/article/:id", articleController.GetByUserId)
+	}
+
 	r.Run()
 }
