@@ -38,6 +38,7 @@ func (a *Article) GetById(id string) (*Article, error) {
 	return &article, nil
 }
 
+// 取得所有文章
 func (a *Article) GetAll() ([]Article, error) {
 	var articles []Article
 	if err := Db.Preload("Tags").Find(&articles).Error; err != nil {

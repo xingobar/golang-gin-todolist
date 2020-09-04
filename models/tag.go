@@ -4,7 +4,7 @@ import "github.com/jinzhu/gorm"
 
 type Tag struct {
 	ID int `gorm:"primary_key;AUTO_INCREMENT"`
-	Title string `gorm:"column:title;size:255;" `
+	Title string `gorm:"column:title;size:255" `
 	Articles []Article `gorm:"many2many:article_tags"`
 	gorm.Model
 }

@@ -72,6 +72,7 @@ func (c *articleController) GetById(context *gin.Context) {
 	})
 }
 
+// 取得所有文章
 func (c *articleController) GetAll(context *gin.Context) {
 	articles, err := c.service.GetAll()
 
