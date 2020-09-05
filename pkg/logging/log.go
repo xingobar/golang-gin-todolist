@@ -20,6 +20,16 @@ func init() {
 	src, err := os.OpenFile(filename, os.O_APPEND|os.O_RDWR, os.ModeAppend)
 	if err != nil {
 		fmt.Println(filename, " not exists ready to create")
+
+		// 檢查目錄是否存在
+		//_, err := os.Stat(os.Getenv("LOG_PATH"))
+		//if os.IsNotExist(err) {
+		//	err = os.Mkdir(os.Getenv("LOG_PATH"), os.ModePerm)
+		//	if err != nil {
+		//		fmt.Println(os.Getenv("LOG_PATH"), " create directory failed")
+		//	}
+		//}
+
 		src, err = os.Create(filename)
 		if err != nil {
 			fmt.Println("create log failed: ", err)
