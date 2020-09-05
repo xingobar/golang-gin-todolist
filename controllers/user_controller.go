@@ -5,6 +5,7 @@ import (
 	"github.com/go-playground/validator"
 	"golang-gin-todolist/jwt"
 	"golang-gin-todolist/models"
+	"golang-gin-todolist/pkg/cache"
 	"golang-gin-todolist/pkg/e"
 	"golang-gin-todolist/services/user_service"
 	"golang-gin-todolist/validation"
@@ -103,6 +104,16 @@ func (c *userController) Login(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"code": e.TOKEN_ERROR,
 			"msg": e.GetMsg(e.TOKEN_ERROR),
+		})
+		return
+	}
+
+	// 把token 存到快取
+	saveErr := cache.SetTokenCache(id, token)
+	if saveErr != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"code": e.CACHE_ERROR,
+			"msg": e.GetMsg(e.CACHE_ERROR),
 		})
 		return
 	}

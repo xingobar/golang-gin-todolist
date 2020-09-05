@@ -3,6 +3,7 @@ package jwt
 import (
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/twinj/uuid"
 	"net/http"
 	"os"
 	"strings"
@@ -10,28 +11,59 @@ import (
 )
 
 type TokenDetails struct {
-	AccessToken string
-	RefreshToken string
-	AtExpiredAt int64
-	RfExpiredAt int64
+	AccessToken string `json:"access_token"`
+	RefreshToken string `json:"refresh_token"`
+	AtExpiredAt int64 `json:"at_expired_at"`
+	RfExpiredAt int64	`json:"rf_expired_at"`
+	AccessUid string	`json:"access_uid"`
+	RefreshUid string	`json:"refresh_uid"`
 }
 
 // 產生 jwt token
-func CreateJwtToken(userid int) (string, error){
+func CreateJwtToken(userid int) (*TokenDetails, error){
+
+	td := &TokenDetails{}
+	td.AtExpiredAt = time.Now().Add(time.Minute * 15).Unix()
+	td.AccessUid = uuid.NewV4().String()
+
+	// 1個禮拜
+	td.RfExpiredAt = time.Now().Add(time.Hour * 24 * 7).Unix()
+	td.RefreshUid = uuid.NewV4().String()
+
+	// 解碼後的 map
 	claims := jwt.MapClaims{
 		"user_id": userid,
-		"exp": time.Now().Add(time.Minute * 15).Unix(), // 過期時間
+		"exp": td.AtExpiredAt, // 過期時間
 		"authorize": true,
+		"access_uid": td.AccessUid,
 	}
 
+	// 設定 access token
 	sign := []byte(os.Getenv("JWT_SECRET")) // 簽名的 key
 	at := jwt.NewWithClaims(jwt.SigningMethodHS256,claims)
 
 	token, err := at.SignedString(sign)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	return token, nil
+	td.AccessToken = token
+
+	// 設定 refresh token
+	refreshClaim := jwt.MapClaims{
+		"user_id": userid,
+		"exp": td.RfExpiredAt,
+		"refresh_uid": td.RefreshUid,
+	}
+	refreshSign := []byte(os.Getenv("REFRESH_JWT"))
+	rf := jwt.NewWithClaims(jwt.SigningMethodHS256, refreshClaim)
+
+	rtoken, err := rf.SignedString(refreshSign)
+	if err != nil {
+		return nil, err
+	}
+	td.RefreshToken = rtoken
+
+	return td, nil
 }
 
 func ParseToken(r *http.Request) (*jwt.Token, error) {
@@ -62,8 +94,11 @@ func ParseToken(r *http.Request) (*jwt.Token, error) {
 	})
 
 	if err != nil {
+		fmt.Println("========= error ========")
+		fmt.Println(err)
 		return nil, err
 	}
-
+	fmt.Println("======== t =========")
+	fmt.Println(t)
 	return t, nil
 }
