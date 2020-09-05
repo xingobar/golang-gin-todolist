@@ -66,6 +66,7 @@ func CreateJwtToken(userid int) (*TokenDetails, error){
 	return td, nil
 }
 
+// 解析 token
 func ParseToken(r *http.Request) (*jwt.Token, error) {
 
 	// 判斷是否有帶入 authorized

@@ -6,9 +6,7 @@ import (
 	"github.com/garyburd/redigo/redis"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
-	"golang-gin-todolist/controllers"
 	jwt2 "golang-gin-todolist/jwt"
-	"golang-gin-todolist/middleware"
 	"golang-gin-todolist/pkg/cache"
 	"golang-gin-todolist/pkg/e"
 	"golang-gin-todolist/router"
@@ -36,28 +34,11 @@ func main() {
 
 	// 標籤
 	tags := r.Group("/tags")
-	{
-		tagController := controllers.NewTagController()
-
-		// 新增標籤
-		tags.POST("/create", tagController.Create)
-
-		// 取得所有標籤
-		tags.GET("/", tagController.GetAll)
-
-		// 取得單一標籤
-		tags.GET("/edit/:id", tagController.GetById)
-
-		// 刪除單一標籤
-		tags.DELETE("/delete/:id", tagController.DeleteById)
-
-		// 更新標籤名稱
-		tags.PUT("/update/:id", tagController.UpdateById)
-	}
+	router.TagRouter(tags)
 
 	// 文章
 	articles := r.Group("/article")
-	articles.Use(middleware.VerifyToken)
+	//articles.Use(middleware.VerifyToken)
 	router.ArticleRouter(articles)
 
 	// 會員資訊
