@@ -3,9 +3,7 @@ package article_service
 import (
 	"fmt"
 	"golang-gin-todolist/models"
-	"golang-gin-todolist/pkg/setting"
 	"golang-gin-todolist/pkg/util"
-	"math"
 )
 
 type ArticleService struct {
@@ -47,18 +45,9 @@ func (s *ArticleService) GetPaginate(page int) (*util.Paginator, error){
 	if err := models.Db.Preload("Tags").Find(&articles).Error; err != nil {
 		return nil, err
 	}
-	perPage := setting.TWENTY_PAGE
-
 	var sliceArticle []models.Article
-	models.Db.Offset((page - 1) * perPage).Limit(perPage).Find(&sliceArticle)
-
-	paginator := new(util.Paginator)
-	paginator.Total = len(articles)
-	paginator.Data = sliceArticle
-	paginator.TotalPage = int(math.Ceil(float64(len(articles) / perPage)))
-	paginator.Page = page
-
-	return paginator, nil
+	models.Db.Scopes(util.Paginate(page)).Find(&sliceArticle)
+	return util.CreatePaginate(len(articles), sliceArticle, page), nil
 }
 
 // 取得所有文章
