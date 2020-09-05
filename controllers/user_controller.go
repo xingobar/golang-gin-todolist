@@ -3,11 +3,13 @@ package controllers
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator"
+	"github.com/ulule/deepcopier"
 	"golang-gin-todolist/jwt"
 	"golang-gin-todolist/models"
 	"golang-gin-todolist/pkg/cache"
 	"golang-gin-todolist/pkg/e"
 	"golang-gin-todolist/pkg/util"
+	resources2 "golang-gin-todolist/resources"
 	"golang-gin-todolist/services/user_service"
 	"golang-gin-todolist/validation"
 	"golang-gin-todolist/validation/user"
@@ -128,9 +130,13 @@ func (c *userController) Login(ctx *gin.Context) {
 		return
 	}
 
+	resources := &resources2.UserResource{}
+	deepcopier.Copy(token).To(resources)
+	deepcopier.Copy(user).To(resources)
+
 	ctx.JSON(http.StatusOK, gin.H{
 		"code": e.SUCCESS,
-		"msg": token,
+		"msg": resources,
 	})
 }
 
