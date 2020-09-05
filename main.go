@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"golang-gin-todolist/controllers"
-	"golang-gin-todolist/middleware"
 	"golang-gin-todolist/router"
 )
 
@@ -42,7 +41,7 @@ func main() {
 
 	// 文章
 	articles := r.Group("/article")
-	articles.Use(middleware.VerifyToken)
+	//articles.Use(middleware.VerifyToken)
 	router.ArticleRouter(articles)
 
 	// 會員資訊
