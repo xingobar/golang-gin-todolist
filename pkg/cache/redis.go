@@ -28,12 +28,12 @@ func SetTokenCache(userid int, td *jwt.TokenDetails) error {
 	now := time.Now()
 
 	// 設定 access token 到快取
-	_, err := Redis.Do("SET", td.AccessUid, strconv.Itoa(userid), "EX", at.Sub(now))
+	_, err := Redis.Do("SET", td.AccessUid, strconv.Itoa(userid), "EX", int(at.Sub(now).Seconds()))
 	if err != nil {
 		return err
 	}
 
-	_, err = Redis.Do("SET", td.RefreshUid, strconv.Itoa(userid), "EX", rt.Sub(now))
+	_, err = Redis.Do("SET", td.RefreshUid, strconv.Itoa(userid), "EX", int(rt.Sub(now).Seconds()))
 	if err != nil {
 		return err
 	}

@@ -94,11 +94,7 @@ func ParseToken(r *http.Request) (*jwt.Token, error) {
 	})
 
 	if err != nil {
-		fmt.Println("========= error ========")
-		fmt.Println(err)
 		return nil, err
 	}
-	fmt.Println("======== t =========")
-	fmt.Println(t)
 	return t, nil
 }

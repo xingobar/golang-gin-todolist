@@ -11,6 +11,8 @@ var MsgFiles = map[int]string {
 	TOKEN_ERROR: "token 產生失敗",
 	UNAUTHORIZED: "沒有權限",
 	CACHE_ERROR: "快取錯誤",
+	REFRESH_EXPIRED: "Refresh token 過期",
+	REFRESH_UNUSED: "Refresh Unused",
 }
 
 func GetMsg(code int) string {
