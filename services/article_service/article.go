@@ -1,38 +1,39 @@
 package article_service
 
 import (
-	"fmt"
+	"golang-gin-todolist/interfaces"
 	"golang-gin-todolist/models"
 	"golang-gin-todolist/pkg/util"
+	"golang-gin-todolist/repository"
 )
 
 type ArticleService struct {
 	article *models.Article
 	tag *models.Tag
+	tagRepository interfaces.ITagRepository
+	articleRepository interfaces.IArticleRepository
 }
 
 func NewArticleService() *ArticleService {
 	return &ArticleService{
 		article: &models.Article{},
 		tag: &models.Tag{},
+		tagRepository: repository.NewTagRepository(),
+		articleRepository: repository.NewArticleRepository(),
 	}
 }
 
 // 新增文章
 func (s *ArticleService) Create(article models.Article, tags []models.Tag) bool {
-	tx := models.Db.Begin()
-	tx.Create(&article)
-	if err := tx.Model(&article).Association("Tags").Append(tags).Error; err != nil {
-		tx.Rollback()
+	if err := s.articleRepository.Create(article, tags); err != nil {
 		return false
 	}
-	tx.Commit()
 	return true
 }
 
 // 根據編號取得文章
 func (s *ArticleService) GetById(id string) (*models.Article, error) {
-	article, err := s.article.GetById(id)
+	article, err := s.articleRepository.GetById(id)
 	if err != nil {
 		return nil, err
 	}
@@ -52,9 +53,7 @@ func (s *ArticleService) GetPaginate(page int) (*util.Paginator, error){
 
 // 取得所有文章
 func (s *ArticleService) GetAll() ([]models.Article, error) {
-	articles, err  := s.article.GetAll()
-	fmt.Println("======== length =======")
-	fmt.Println(len(articles))
+	articles, err  := s.articleRepository.GetAll()
 	if err != nil {
 		return nil, err
 	}
@@ -63,7 +62,7 @@ func (s *ArticleService) GetAll() ([]models.Article, error) {
 
 // 根據編號刪除文章
 func (s *ArticleService) DeleteById(id string) error {
-	article, err := s.article.GetById(id)
+	article, err := s.articleRepository.GetById(id)
 	if err != nil {
 		return err
 	}
