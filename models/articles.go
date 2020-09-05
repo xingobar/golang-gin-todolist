@@ -8,6 +8,7 @@ type Article struct {
 	Content string `json:"content"`
 	UserId int	`json:"user_id"`
 	Tags []Tag `gorm:"many2many:article_tags;" json:"tags"`
+	User User `gorm:"foreignKey:ID" json:"user"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 	DeletedAt *time.Time `sql:"index" json:"deleted_at"`

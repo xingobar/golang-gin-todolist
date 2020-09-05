@@ -43,7 +43,7 @@ func (s *ArticleService) GetPaginate(page int) (*util.Paginator, error){
 		return nil, err
 	}
 	var sliceArticle []models.Article
-	models.Db.Scopes(util.Paginate(page)).Preload("Tags").Find(&sliceArticle)
+	models.Db.Scopes(util.Paginate(page)).Preload("Tags").Preload("User").Find(&sliceArticle)
 	return util.CreatePaginate(len(articles), sliceArticle, page), nil
 }
 
