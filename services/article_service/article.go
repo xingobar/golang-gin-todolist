@@ -1,7 +1,10 @@
 package article_service
 
 import (
+	"fmt"
 	"golang-gin-todolist/models"
+	"golang-gin-todolist/pkg/util"
+	"math"
 )
 
 type ArticleService struct {
@@ -37,9 +40,36 @@ func (s *ArticleService) GetById(id string) (*models.Article, error) {
 	return article, nil
 }
 
+// 取得分頁
+func (s *ArticleService) GetPaginate(page int) (*util.Paginator, error){
+	var articles []models.Article
+	if err := models.Db.Preload("Tags").Find(&articles).Error; err != nil {
+		return nil, err
+	}
+	totalPage := int(math.Ceil(float64(len(articles) / 1)))
+	perPage := 1
+	start := (page - 1) * perPage
+	last := perPage * page
+
+	if page > totalPage {
+		start = (totalPage - 2) * perPage
+		last =  (totalPage - 1) * perPage
+	}
+
+	paginator := new(util.Paginator)
+	paginator.Total = len(articles)
+	paginator.Data = articles[start: last]
+	paginator.TotalPage = int(math.Ceil(float64(len(articles) / 1)))
+	paginator.Page = page
+
+	return paginator, nil
+}
+
 // 取得所有文章
 func (s *ArticleService) GetAll() ([]models.Article, error) {
 	articles, err  := s.article.GetAll()
+	fmt.Println("======== length =======")
+	fmt.Println(len(articles))
 	if err != nil {
 		return nil, err
 	}

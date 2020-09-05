@@ -7,6 +7,7 @@ import (
 	"golang-gin-todolist/services/article_service"
 	"golang-gin-todolist/services/tag_service"
 	"net/http"
+	"strconv"
 )
 
 type articleController struct {
@@ -69,6 +70,20 @@ func (c *articleController) GetById(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{
 		"code": e.SUCCESS,
 		"msg": article,
+	})
+}
+
+func (c *articleController) GetPaginate(ctx *gin.Context) {
+	page := ctx.DefaultQuery("page", "1")
+	p, err := strconv.Atoi(page)
+	if err != nil {
+		p = 1
+	}
+	articles, err := c.service.GetPaginate(p)
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"code": e.SUCCESS,
+		"msg": articles,
 	})
 }
 

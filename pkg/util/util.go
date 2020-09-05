@@ -5,6 +5,13 @@ import (
 	"log"
 )
 
+type Paginator struct {
+	Total int `json:"total"` // 總筆數
+	TotalPage int `json:"total_page"` // 總頁數
+	Data interface{} `json:"data"` // 資料
+	Page int `json:"page"` // 目前頁碼
+}
+
 func HashAndSalt(data []byte) string {
 	hash, err := bcrypt.GenerateFromPassword(data, bcrypt.MinCost)
 	if err != nil {

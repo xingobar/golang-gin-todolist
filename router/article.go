@@ -14,7 +14,7 @@ func ArticleRouter(router *gin.RouterGroup) {
 	router.GET("/edit/:id", articleController.GetById)
 
 	// 取得所有文章
-	router.GET("/", articleController.GetAll)
+	router.GET("/", articleController.GetPaginate)
 
 	// 刪除文章
 	router.DELETE("/:id", articleController.DeleteById)
