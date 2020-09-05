@@ -2,10 +2,13 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator"
 	"golang-gin-todolist/models"
 	"golang-gin-todolist/pkg/e"
 	"golang-gin-todolist/services/article_service"
 	"golang-gin-todolist/services/tag_service"
+	validation2 "golang-gin-todolist/validation"
+	article2 "golang-gin-todolist/validation/article"
 	"net/http"
 	"strconv"
 )
@@ -24,6 +27,15 @@ func NewArticleController() *articleController{
 
 // 新增文章
 func (c *articleController) Create(context *gin.Context) {
+	var validation article2.CreateArticleValidation
+	if err := context.ShouldBind(&validation); err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{
+			"code": e.INVALID_REQUEST,
+			"msg": validation2.GetError(err.(validator.ValidationErrors), article2.Message),
+		})
+		return
+	}
+
 	var article models.Article
 
 	article = models.Article{

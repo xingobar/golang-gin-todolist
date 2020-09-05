@@ -8,16 +8,12 @@ import (
 )
 
 type ArticleService struct {
-	article *models.Article
-	tag *models.Tag
 	tagRepository interfaces.ITagRepository
 	articleRepository interfaces.IArticleRepository
 }
 
 func NewArticleService() *ArticleService {
 	return &ArticleService{
-		article: &models.Article{},
-		tag: &models.Tag{},
 		tagRepository: repository.NewTagRepository(),
 		articleRepository: repository.NewArticleRepository(),
 	}

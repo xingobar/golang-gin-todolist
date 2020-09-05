@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a6e2ffb0-8114-430d-86ce-36667f1eb10d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/controllers/article_controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/article_controller.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-bin" beforeDir="false" afterPath="$PROJECT_DIR$/gin-bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/articles.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/articles.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/article_service/article.go" beforeDir="false" afterPath="$PROJECT_DIR$/services/article_service/article.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -15,17 +18,29 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/controllers/article_controller.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="301">
-              <caret line="80" column="5" selection-start-line="80" selection-start-column="5" selection-end-line="80" selection-end-column="5" />
+            <state relative-caret-position="-50">
+              <caret line="28" column="35" selection-start-line="28" selection-start-column="35" selection-end-line="28" selection-end-column="35" />
+              <folding>
+                <element signature="e#21#233#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/validation/article/index.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="155">
+              <caret line="5" column="29" selection-start-line="5" selection-start-column="29" selection-end-line="5" selection-end-column="29" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/services/article_service/article.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="203">
-              <caret line="69" column="11" selection-start-line="69" selection-start-column="11" selection-end-line="69" selection-end-column="11" />
+            <state relative-caret-position="-1670">
+              <caret line="15" column="27" selection-start-line="15" selection-start-column="27" selection-end-line="15" selection-end-column="27" />
             </state>
           </provider>
         </entry>
@@ -47,15 +62,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="314">
               <caret line="13" selection-start-line="13" selection-end-line="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/models/articles.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4">
-              <caret line="38" column="1" lean-forward="true" selection-start-line="38" selection-start-column="1" selection-end-line="38" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -99,7 +105,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/db/migrations/000001_create_tags_table.up.sql" />
         <option value="$PROJECT_DIR$/pkg/e.go" />
         <option value="$PROJECT_DIR$/db/migrations/000002_create_article_tags_table.down.sql" />
         <option value="$PROJECT_DIR$/db/migrations/000003_create_articles_table.up.sql" />
@@ -135,10 +140,8 @@
         <option value="$PROJECT_DIR$/services/user_service/user_service.go" />
         <option value="$PROJECT_DIR$/controllers/user_controller.go" />
         <option value="$PROJECT_DIR$/router/article.go" />
-        <option value="$PROJECT_DIR$/controllers/article_controller.go" />
         <option value="$PROJECT_DIR$/.env" />
         <option value="$PROJECT_DIR$/pkg/setting/index.go" />
-        <option value="$PROJECT_DIR$/models/articles.go" />
         <option value="$PROJECT_DIR$/pkg/util/util.go" />
         <option value="$PROJECT_DIR$/interface/itag_repository.go" />
         <option value="$PROJECT_DIR$/repository/tag_repository.go" />
@@ -149,7 +152,10 @@
         <option value="$PROJECT_DIR$/controllers/tag_controller.go" />
         <option value="$PROJECT_DIR$/repository/article_repository.go" />
         <option value="$PROJECT_DIR$/interfaces/iarticle_repository.go" />
+        <option value="$PROJECT_DIR$/controllers/article_controller.go" />
+        <option value="$PROJECT_DIR$/models/articles.go" />
         <option value="$PROJECT_DIR$/services/article_service/article.go" />
+        <option value="$PROJECT_DIR$/validation/article/index.go" />
       </list>
     </option>
   </component>
@@ -184,18 +190,13 @@
             <path>
               <item name="golang-gin-todolist" type="b2602c69:ProjectViewProjectNode" />
               <item name="golang-gin-todolist" type="462c0819:PsiDirectoryNode" />
-              <item name="repository" type="462c0819:PsiDirectoryNode" />
+              <item name="validation" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="golang-gin-todolist" type="b2602c69:ProjectViewProjectNode" />
               <item name="golang-gin-todolist" type="462c0819:PsiDirectoryNode" />
-              <item name="services" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="golang-gin-todolist" type="b2602c69:ProjectViewProjectNode" />
-              <item name="golang-gin-todolist" type="462c0819:PsiDirectoryNode" />
-              <item name="services" type="462c0819:PsiDirectoryNode" />
-              <item name="article_service" type="462c0819:PsiDirectoryNode" />
+              <item name="validation" type="462c0819:PsiDirectoryNode" />
+              <item name="article" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -295,13 +296,6 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../github.com/garyburd/redigo/redis/conn.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="170" column="22" selection-start-line="170" selection-start-column="22" selection-end-line="170" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///usr/local/Cellar/go/1.13.4/libexec/src/time/time.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="184">
@@ -636,27 +630,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/articles.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4">
-          <caret line="38" column="1" lean-forward="true" selection-start-line="38" selection-start-column="1" selection-end-line="38" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/article_controller.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="301">
-          <caret line="80" column="5" selection-start-line="80" selection-start-column="5" selection-end-line="80" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/interfaces/iarticle_repository.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="314">
-          <caret line="13" selection-start-line="13" selection-end-line="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/repository/article_repository.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
@@ -667,10 +640,41 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/models/articles.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="19" selection-start-line="19" selection-end-line="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/interfaces/iarticle_repository.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="314">
+          <caret line="13" selection-start-line="13" selection-end-line="13" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/services/article_service/article.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="69" column="11" selection-start-line="69" selection-start-column="11" selection-end-line="69" selection-end-column="11" />
+        <state relative-caret-position="-1670">
+          <caret line="15" column="27" selection-start-line="15" selection-start-column="27" selection-end-line="15" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/article_controller.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-50">
+          <caret line="28" column="35" selection-start-line="28" selection-start-column="35" selection-end-line="28" selection-end-column="35" />
+          <folding>
+            <element signature="e#21#233#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/validation/article/index.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="155">
+          <caret line="5" column="29" selection-start-line="5" selection-start-column="29" selection-end-line="5" selection-end-column="29" />
         </state>
       </provider>
     </entry>
