@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"golang-gin-todolist/controllers"
+	"golang-gin-todolist/router"
 )
 
 // migrate -path db/migrations -database "mysql://root:@/gin_todo" -verbose up
@@ -40,32 +41,11 @@ func main() {
 
 	// 文章
 	articles := r.Group("/article")
-	{
-		articleController := controllers.NewArticleController()
-		// 新增文章
-		articles.POST("/create", articleController.Create)
-
-		// 取得文章
-		articles.GET("/edit/:id", articleController.GetById)
-
-		// 取得所有文章
-		articles.GET("/", articleController.GetAll)
-
-		articles.DELETE("/:id", articleController.DeleteById)
-	}
+	router.ArticleRouter(articles)
 
 	// 會員資訊
 	users := r.Group("/users")
-	{
-		articleController := controllers.NewArticleController()
-		userController := controllers.NewUserController()
-
-		// 會員文章
-		users.GET("/article/:id", articleController.GetByUserId)
-
-		// 註冊
-		users.POST("/", userController.Register)
-	}
+	router.UserRouter(users)
 
 	r.Run()
 }
