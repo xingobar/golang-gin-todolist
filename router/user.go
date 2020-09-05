@@ -13,5 +13,8 @@ func UserRouter(router *gin.RouterGroup) {
 	router.GET("/article/:id", articleController.GetByUserId)
 
 	// 註冊
-	router.POST("/", userController.Register)
+	router.POST("/register", userController.Register)
+
+	// 登入
+	router.POST("/login", userController.Login)
 }

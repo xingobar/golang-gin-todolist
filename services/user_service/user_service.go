@@ -33,3 +33,13 @@ func (s *UserService) CheckExistByEmail(email string) (bool, error) {
 	}
 	return false, nil
 }
+
+// 根據信箱以及密碼取得會員
+func (s *UserService) GetUserByEmailAndPassword(email string, password string) (*models.User, error) {
+	var user models.User
+
+	if err := models.Db.Where("email = ? AND password = ?", email, password).First(&user).Error; err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
