@@ -21,6 +21,7 @@ func (repository *articleRepository) Create(article models.Article, tags []model
 		tx.Rollback()
 		return err
 	}
+	tx.Commit()
 	return nil
 }
 
