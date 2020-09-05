@@ -134,3 +134,21 @@ func (c *userController) Login(ctx *gin.Context) {
 	})
 }
 
+// 取得會員文章
+func (c *userController) GetArticles (ctx *gin.Context) {
+
+	article, err := c.service.GetArticles(ctx.Param("id"))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"code": e.INVALID_REQUEST,
+			"msg": e.GetMsg(e.INVALID_REQUEST),
+		})
+		return
+	}
+
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"code": e.SUCCESS,
+		"msg": article,
+	})
+}

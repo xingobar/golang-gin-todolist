@@ -71,11 +71,3 @@ func (s *ArticleService) DeleteById(id string) error {
 	}
 	return nil
 }
-
-func (s *ArticleService) GetByUserId(userId string) ([]models.Article, error){
-	var article []models.Article
-	if err := models.Db.Preload("Tags").Where("user_id = ?", userId).Find(&article).Error; err != nil {
-		return nil, err
-	}
-	return article, nil
-}

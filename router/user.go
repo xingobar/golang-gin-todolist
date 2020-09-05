@@ -6,11 +6,10 @@ import (
 )
 
 func UserRouter(router *gin.RouterGroup) {
-	articleController := controllers.NewArticleController()
 	userController := controllers.NewUserController()
 
 	// 會員文章
-	router.GET("/article/:id", articleController.GetByUserId)
+	router.GET("/:id/article", userController.GetArticles)
 
 	// 註冊
 	router.POST("/register", userController.Register)
