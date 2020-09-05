@@ -48,18 +48,13 @@ func (s *ArticleService) GetPaginate(page int) (*util.Paginator, error){
 		return nil, err
 	}
 	perPage := setting.TWENTY_PAGE
-	totalPage := int(math.Ceil(float64(len(articles) / perPage)))
-	start := (page - 1) * perPage
-	last := perPage * page
 
-	if page > totalPage {
-		start = (totalPage - 2) * perPage
-		last =  (totalPage - 1) * perPage
-	}
+	var sliceArticle []models.Article
+	models.Db.Offset((page - 1) * perPage).Limit(perPage).Find(&sliceArticle)
 
 	paginator := new(util.Paginator)
 	paginator.Total = len(articles)
-	paginator.Data = articles[start: last]
+	paginator.Data = sliceArticle
 	paginator.TotalPage = int(math.Ceil(float64(len(articles) / perPage)))
 	paginator.Page = page
 
