@@ -2,8 +2,11 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator"
 	"golang-gin-todolist/pkg/e"
 	"golang-gin-todolist/services/tag_service"
+	"golang-gin-todolist/validation"
+	"golang-gin-todolist/validation/tag"
 	"net/http"
 	"strconv"
 )
@@ -21,6 +24,16 @@ func NewTagController() *tagController {
 
 // 新增標籤
 func (t *tagController) Create(context *gin.Context) {
+
+	var createTagValidation tag.CreateTagValidation
+	if err := context.ShouldBind(&createTagValidation); err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{
+			"code": e.INVALID_REQUEST,
+			"msg": validation.GetError(err.(validator.ValidationErrors), tag.Message),
+		})
+		return
+	}
+
 	title := context.PostForm("title")
 
 	// 檢查標籤是否存在
@@ -115,6 +128,16 @@ func (t *tagController) DeleteById(context *gin.Context) {
 
 // 更新標籤名稱
 func (t *tagController) UpdateById(context *gin.Context) {
+
+	var v tag.CreateTagValidation
+	if err := context.ShouldBind(&v); err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{
+			"code": e.INVALID_REQUEST,
+			"msg": validation.GetError(err.(validator.ValidationErrors), tag.Message),
+		})
+		return
+	}
+
 	id, err := strconv.Atoi(context.Param("id"))
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{
