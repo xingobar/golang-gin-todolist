@@ -1,6 +1,8 @@
 package user_service
 
 import (
+	"errors"
+	"github.com/jinzhu/gorm"
 	"golang-gin-todolist/models"
 )
 
@@ -24,6 +26,10 @@ func (s *UserService) Register(user models.User) error{
 func (s *UserService) CheckExistByEmail(email string) (bool, error) {
 	var user models.User
 	if err := models.Db.Where("email = ?",email).First(&user).Error; err != nil {
+		// 判斷是否有資料
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return true, nil
+		}
 		return false, err
 	}
 
@@ -31,14 +37,15 @@ func (s *UserService) CheckExistByEmail(email string) (bool, error) {
 	if user == (models.User{}) {
 		return true, nil
 	}
+
 	return false, nil
 }
 
 // 根據信箱以及密碼取得會員
-func (s *UserService) GetUserByEmailAndPassword(email string, password string) (*models.User, error) {
+func (s *UserService) GetUserByEmail(email string) (*models.User, error) {
 	var user models.User
 
-	if err := models.Db.Where("email = ? AND password = ?", email, password).First(&user).Error; err != nil {
+	if err := models.Db.Where("email = ?", email).First(&user).Error; err != nil {
 		return nil, err
 	}
 	return &user, nil

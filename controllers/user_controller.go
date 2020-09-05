@@ -1,12 +1,14 @@
 package controllers
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator"
 	"golang-gin-todolist/jwt"
 	"golang-gin-todolist/models"
 	"golang-gin-todolist/pkg/cache"
 	"golang-gin-todolist/pkg/e"
+	"golang-gin-todolist/pkg/util"
 	"golang-gin-todolist/services/user_service"
 	"golang-gin-todolist/validation"
 	"golang-gin-todolist/validation/user"
@@ -40,7 +42,7 @@ func (c *userController) Register(ctx *gin.Context) {
 	var user  = models.User{
 		Username: v.Username,
 		Email: v.Email,
-		Password: v.Password,
+		Password: util.HashAndSalt([]byte(v.Password)),
 	}
 
 	// 檢查帳號是否存在
@@ -89,8 +91,17 @@ func (c *userController) Login(ctx *gin.Context) {
 		return
 	}
 
-	user, err := c.service.GetUserByEmailAndPassword(login.Email, login.Password)
+	user, err := c.service.GetUserByEmail(login.Email)
 	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"code": e.LOGIN_ERROR,
+			"msg": e.GetMsg(e.LOGIN_ERROR),
+		})
+		return
+	}
+
+	// 檢查密碼是否一致
+	if ok := util.ComparePasswords(user.Password, []byte(login.Password)); !ok {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"code": e.LOGIN_ERROR,
 			"msg": e.GetMsg(e.LOGIN_ERROR),
