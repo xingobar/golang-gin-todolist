@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 )
@@ -23,7 +24,7 @@ func CreateJwtToken(userid int) (string, error){
 		"authorize": true,
 	}
 
-	sign := []byte("todolist") // 簽名的 key
+	sign := []byte(os.Getenv("JWT_SECRET")) // 簽名的 key
 	at := jwt.NewWithClaims(jwt.SigningMethodHS256,claims)
 
 	token, err := at.SignedString(sign)
@@ -57,7 +58,7 @@ func ParseToken(r *http.Request) (*jwt.Token, error) {
 			return nil, fmt.Errorf("unepxected method")
 		}
 		// 解析成功
-		return []byte("todolist"), nil
+		return []byte(os.Getenv("JWT_SECRET")), nil
 	})
 
 	if err != nil {

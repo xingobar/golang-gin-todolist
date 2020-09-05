@@ -2,14 +2,21 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	"golang-gin-todolist/controllers"
 	"golang-gin-todolist/router"
+	"log"
 )
 
 // migrate -path db/migrations -database "mysql://root:@/gin_todo" -verbose up
 
 func main() {
 	r := gin.Default()
+
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 
 	//r.GET("/run", func(context *gin.Context) {
 	//	fmt.Println("test")
