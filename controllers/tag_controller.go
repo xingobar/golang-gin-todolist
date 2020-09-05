@@ -32,8 +32,8 @@ func (t *tagController) Create(context *gin.Context) {
 		})
 		return
 	}
-	err := t.service.CreateTag(title)
-	if err != nil {
+	ok := t.service.CreateTag(title)
+	if !ok {
 		context.JSON(http.StatusBadRequest, gin.H{
 			"code": e.ERROR,
 			"msg": e.GetMsg(e.ERROR),

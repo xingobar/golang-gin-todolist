@@ -1,7 +1,9 @@
 package tag_service
 
 import (
+	"golang-gin-todolist/interfaces"
 	"golang-gin-todolist/models"
+	"golang-gin-todolist/repository"
 )
 
 type Tag struct {
@@ -10,35 +12,41 @@ type Tag struct {
 }
 
 type TagService struct {
-	tag *models.Tag
+	tagRepository interfaces.ITagRepository
 }
 
 func NewTagService() *TagService{
 	return &TagService{
-		tag: &models.Tag{},
+		tagRepository: repository.NewTagRepository(),
 	}
 }
 
 // 新增標籤
-func (s *TagService) CreateTag(title string) (error){
-	err := s.tag.Add(title)
+func (s *TagService) CreateTag(title string) bool{
+	_, err := s.tagRepository.Add(title)
 	if err != nil {
-		return err
+		return false
 	}
-	return nil
+	return true
 }
 
 // 判斷標籤名稱是否存在
 func (s *TagService) ExistByName(title string) bool{
-	exists, err := s.tag.ExistByName(title)
+	ok, err := s.tagRepository.ExistByName(title)
 	if err != nil {
 		return false
 	}
-	return exists
+
+	if !ok {
+		return false
+	}
+	return true
 }
 
 func (s *TagService) GetTags() []models.Tag {
-	tags, err := s.tag.GetTags()
+
+	tags, err := s.tagRepository.GetTags()
+
 	if err != nil {
 		return nil
 	}
@@ -46,7 +54,7 @@ func (s *TagService) GetTags() []models.Tag {
 }
 
 func (s *TagService) GetById(id int) *models.Tag {
-	tag, err := s.tag.GetById(id)
+	tag, err := s.tagRepository.GetById(id)
 	if err != nil {
 		return nil
 	}
@@ -54,7 +62,7 @@ func (s *TagService) GetById(id int) *models.Tag {
 }
 
 func (s *TagService) DeleteById(id int) bool {
-	_, err := s.tag.DeleteById(id)
+	_, err := s.tagRepository.DeleteById(id)
 	if err != nil {
 		return false
 	}
@@ -63,20 +71,18 @@ func (s *TagService) DeleteById(id int) bool {
 
 // 更新標籤名稱
 func (s *TagService) UpdateById(id int, title string) bool {
-	_, err := s.tag.GetById(id)
+	_, err := s.tagRepository.GetById(id)
 	if err != nil {
 		return false
 	}
-	var tag models.Tag
-	tag.Title = title
-	if _, err := s.tag.UpdateById(id, tag); err != nil {
+	if _, err := s.tagRepository.UpdateById(id, models.Tag{Title:title}); err != nil {
 		return false
 	}
 	return true
 }
 
 func (s *TagService) GetByIds(id []string) []models.Tag{
-	tags, err := s.tag.GetByIds(id)
+	tags, err := s.tagRepository.GetByIds(id)
 	if err != nil {
 		return nil
 	}
