@@ -3,6 +3,7 @@ package article_service
 import (
 	"fmt"
 	"golang-gin-todolist/models"
+	"golang-gin-todolist/pkg/setting"
 	"golang-gin-todolist/pkg/util"
 	"math"
 )
@@ -46,8 +47,8 @@ func (s *ArticleService) GetPaginate(page int) (*util.Paginator, error){
 	if err := models.Db.Preload("Tags").Find(&articles).Error; err != nil {
 		return nil, err
 	}
-	totalPage := int(math.Ceil(float64(len(articles) / 1)))
-	perPage := 1
+	perPage := setting.TWENTY_PAGE
+	totalPage := int(math.Ceil(float64(len(articles) / perPage)))
 	start := (page - 1) * perPage
 	last := perPage * page
 
@@ -59,7 +60,7 @@ func (s *ArticleService) GetPaginate(page int) (*util.Paginator, error){
 	paginator := new(util.Paginator)
 	paginator.Total = len(articles)
 	paginator.Data = articles[start: last]
-	paginator.TotalPage = int(math.Ceil(float64(len(articles) / 1)))
+	paginator.TotalPage = int(math.Ceil(float64(len(articles) / perPage)))
 	paginator.Page = page
 
 	return paginator, nil
