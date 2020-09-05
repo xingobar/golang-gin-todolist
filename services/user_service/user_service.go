@@ -32,6 +32,7 @@ func (s *UserService) GetUserByEmail(email string) (*models.User, error) {
 	return s.userRepository.GetUserByEmail(email)
 }
 
+// 取得會員文章
 func (s *UserService) GetArticles(userId string) ([]models.Article, error){
 	var article []models.Article
 	if err := models.Db.Preload("Tags").Where("user_id = ?", userId).Find(&article).Error; err != nil {
