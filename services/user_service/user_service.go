@@ -1,52 +1,33 @@
 package user_service
 
 import (
-	"errors"
-	"github.com/jinzhu/gorm"
+	"golang-gin-todolist/interfaces"
 	"golang-gin-todolist/models"
+	"golang-gin-todolist/repository"
 )
 
 type UserService struct {
-
+	userRepository interfaces.IUserRepository
 }
 
 func NewUserService() *UserService {
-	return &UserService{}
+	return &UserService{
+		userRepository: repository.NewUserRepository(),
+	}
 }
 
 // 註冊
-func (s *UserService) Register(user models.User) error{
-	if err := models.Db.Create(&user).Error; err != nil {
-		return err
-	}
-	return nil
+func (s *UserService) Register(user models.User) bool{
+	ok, _ := s.userRepository.Create(user)
+	return ok
 }
 
 // 檢查資料是否存在
 func (s *UserService) CheckExistByEmail(email string) (bool, error) {
-	var user models.User
-	if err := models.Db.Where("email = ?",email).First(&user).Error; err != nil {
-		// 判斷是否有資料
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return true, nil
-		}
-		return false, err
-	}
-
-	// 判斷是否有資料
-	if user == (models.User{}) {
-		return true, nil
-	}
-
-	return false, nil
+	return s.userRepository.CheckExistByEmail(email)
 }
 
 // 根據信箱以及密碼取得會員
 func (s *UserService) GetUserByEmail(email string) (*models.User, error) {
-	var user models.User
-
-	if err := models.Db.Where("email = ?", email).First(&user).Error; err != nil {
-		return nil, err
-	}
-	return &user, nil
+	return s.userRepository.GetUserByEmail(email)
 }

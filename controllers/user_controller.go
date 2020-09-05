@@ -64,7 +64,7 @@ func (c *userController) Register(ctx *gin.Context) {
 	}
 
 	// 註冊
-	if err := c.service.Register(user); err != nil {
+	if ok := c.service.Register(user); !ok {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"code": e.INVALID_REQUEST,
 			"msg": e.GetMsg(e.INVALID_REQUEST),
