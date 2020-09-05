@@ -16,7 +16,7 @@ type Paginator struct {
 
 // 分頁 scope
 func Paginate(page int) func(db *gorm.DB) *gorm.DB {
-	perPage := 1 // setting.TWENTY_PAGE
+	perPage := setting.TWENTY_PAGE
 	return func(db *gorm.DB) *gorm.DB {
 		return db.Offset((page - setting.TWENTY_PAGE) * perPage).Limit(perPage)
 	}
