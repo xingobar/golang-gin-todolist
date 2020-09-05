@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	jwt2 "golang-gin-todolist/jwt"
+	"golang-gin-todolist/middleware"
 	"golang-gin-todolist/pkg/cache"
 	"golang-gin-todolist/pkg/e"
 	"golang-gin-todolist/router"
@@ -19,6 +20,7 @@ import (
 
 func main() {
 	r := gin.Default()
+	r.Use(middleware.LoggerToFile)
 
 	err := godotenv.Load()
 	if err != nil {

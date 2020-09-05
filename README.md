@@ -13,3 +13,7 @@ rollback:  migrate -path db/migrations -database "mysql://root:@/gin_todo" -verb
 
 JWT 參考資源:
 1. github.com/dgrijalva/jwt-go
+
+Log 參考資源:
+1. https://www.cnblogs.com/xinliangcoder/p/11212573.html
+2. https://mojotv.cn/2018/12/27/golang-logrus-tutorial
