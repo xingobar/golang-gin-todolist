@@ -9,6 +9,7 @@ var MsgFiles = map[int]string {
 	EXISTS_EMAIL: "帳號存在",
 	LOGIN_ERROR: "帳號或密碼錯誤",
 	TOKEN_ERROR: "token 產生失敗",
+	UNAUTHORIZED: "沒有權限",
 }
 
 func GetMsg(code int) string {

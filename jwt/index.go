@@ -34,8 +34,23 @@ func CreateJwtToken(userid int) (string, error){
 }
 
 func ParseToken(r *http.Request) (*jwt.Token, error) {
-	auth := r.Header.Get("Authroization")
-	token := strings.Split(auth,  "Bearer ")[1]
+
+	// 判斷是否有帶入 authorized
+	_, ok := r.Header["Authorization"]
+	if !ok {
+		return nil, fmt.Errorf("UnAuthorized")
+	}
+
+	// 取得 token 解析
+	auth := r.Header.Get("Authorization")
+	strarray := strings.Split(auth, "Bearer ")
+
+	// 判斷是否有帶入 Beaer
+	if len(strarray) < 2 {
+		return nil, fmt.Errorf("UnAuthorized")
+	}
+
+	token := strarray[1]
 	
 	t, err := jwt.Parse(token, func(token *jwt.Token) (i interface{}, e error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {

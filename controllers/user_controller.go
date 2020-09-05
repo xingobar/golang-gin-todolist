@@ -112,3 +112,4 @@ func (c *userController) Login(ctx *gin.Context) {
 		"msg": token,
 	})
 }
+
