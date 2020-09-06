@@ -28,7 +28,10 @@ func (repository *articleRepository) Create(article models.Article, tags []model
 // 取得單一文章
 func (repository *articleRepository) GetById(id string) (*models.Article, error) {
 	var article models.Article
-	if err := models.Db.Preload("Tags").Preload("User").Where("id = ?", id).First(&article).Error; err != nil {
+	if err := models.Db.Preload("Tags").
+					    Preload("User").
+						Preload("Comments", "parent_id IS NULL").
+						Where("id = ?", id).First(&article).Error; err != nil {
 		return nil, err
 	}
 	return &article, nil
