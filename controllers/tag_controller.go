@@ -2,10 +2,9 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator"
 	"golang-gin-todolist/pkg/e"
+	"golang-gin-todolist/resources"
 	"golang-gin-todolist/services/tag_service"
-	"golang-gin-todolist/validation"
 	"golang-gin-todolist/validation/tag"
 	"net/http"
 	"strconv"
@@ -27,10 +26,7 @@ func (t *tagController) Create(context *gin.Context) {
 
 	var createTagValidation tag.CreateTagValidation
 	if err := context.ShouldBind(&createTagValidation); err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{
-			"code": e.INVALID_REQUEST,
-			"msg": validation.GetError(err.(validator.ValidationErrors), tag.Message),
-		})
+		resources.NoValidResponse(context, err, tag.Message)
 		return
 	}
 
@@ -39,91 +35,58 @@ func (t *tagController) Create(context *gin.Context) {
 	// 檢查標籤是否存在
 	exists := t.service.ExistByName(title)
 	if exists {
-		context.JSON(http.StatusBadRequest, gin.H{
-			"code": e.ERROR_EXIST_TAG,
-			"msg": e.GetMsg(e.ERROR_EXIST_TAG),
-		})
+		resources.ErrorResponse(context, http.StatusBadRequest, e.ERROR_EXIST_TAG)
 		return
 	}
 	ok := t.service.CreateTag(title)
 	if !ok {
-		context.JSON(http.StatusBadRequest, gin.H{
-			"code": e.ERROR,
-			"msg": e.GetMsg(e.ERROR),
-		})
+		resources.ErrorResponse(context, http.StatusBadRequest, e.ERROR)
 		return
 	}
-	context.JSON(http.StatusOK, gin.H{
-		"code": e.SUCCESS,
-		"msg": e.GetMsg(e.SUCCESS),
-	})
+	resources.SuccessResponse(context, e.GetMsg(e.SUCCESS))
 }
 
 // 取得所有標籤
 func (t *tagController) GetAll(context *gin.Context){
 	tags := t.service.GetTags()
 	if tags == nil {
-		context.JSON(http.StatusBadRequest, gin.H{
-			"code": e.ERROR,
-			"msg": e.GetMsg(e.ERROR),
-		})
+		resources.ErrorResponse(context, http.StatusBadRequest, e.ERROR)
 		return
 	}
-	context.JSON(http.StatusOK, gin.H{
-		"code": e.SUCCESS,
-		"data": tags,
-	})
+	resources.SuccessResponse(context, tags)
 }
 
 // 取得單一標籤
 func (t *tagController) GetById(context *gin.Context) {
 	id, err := strconv.Atoi(context.Param("id"))
 	if err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{
-			"code": e.ERROR,
-			"msg": e.GetMsg(e.ERROR),
-		})
+		resources.ErrorResponse(context, http.StatusBadRequest, e.ERROR)
 		return
 	}
 
 	tag := t.service.GetById(int(id))
 
 	if tag == nil {
-		context.JSON(http.StatusNotFound, gin.H{
-			"code": e.NOT_EXISTS_TAG,
-			"msg": e.GetMsg(e.NOT_EXISTS_TAG),
-		})
+		resources.ErrorResponse(context, http.StatusNotFound, e.NOT_EXISTS_TAG)
 		return
 	}
 
-	context.JSON(http.StatusOK, gin.H{
-		"code": e.SUCCESS,
-		"msg": tag,
-	})
+	resources.SuccessResponse(context, tag)
 }
 
 // 刪除標籤
 func (t *tagController) DeleteById(context *gin.Context) {
 	id, err := strconv.Atoi(context.Param("id"))
 	if err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{
-			"code": e.INVALID_REQUEST,
-			"msg": e.GetMsg(e.INVALID_REQUEST),
-		})
+		resources.ErrorResponse(context, http.StatusBadRequest, e.INVALID_REQUEST)
 		return
 	}
 
 	if ok := t.service.DeleteById(id); !ok {
-		context.JSON(http.StatusBadRequest, gin.H{
-			"code": e.INVALID_REQUEST,
-			"msg": e.GetMsg(e.INVALID_REQUEST),
-		})
+		resources.ErrorResponse(context, http.StatusBadRequest, e.INVALID_REQUEST)
 		return
 	}
-	context.JSON(http.StatusOK, gin.H{
-		"code": e.SUCCESS,
-		"msg": e.GetMsg(e.SUCCESS),
-	})
+	resources.SuccessResponse(context, e.GetMsg(e.SUCCESS))
 }
 
 // 更新標籤名稱
@@ -131,32 +94,20 @@ func (t *tagController) UpdateById(context *gin.Context) {
 
 	var v tag.CreateTagValidation
 	if err := context.ShouldBind(&v); err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{
-			"code": e.INVALID_REQUEST,
-			"msg": validation.GetError(err.(validator.ValidationErrors), tag.Message),
-		})
+		resources.NoValidResponse(context, err, tag.Message)
 		return
 	}
 
 	id, err := strconv.Atoi(context.Param("id"))
 	if err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{
-			"code": e.INVALID_REQUEST,
-			"msg": e.GetMsg(e.INVALID_REQUEST),
-		})
+		resources.ErrorResponse(context, http.StatusBadRequest, e.INVALID_REQUEST)
 		return
 	}
 
 	if ok := t.service.UpdateById(id, context.PostForm("title")); !ok {
-		context.JSON(http.StatusBadRequest, gin.H{
-			"code": e.INVALID_REQUEST,
-			"msg": e.GetMsg(e.INVALID_REQUEST),
-		})
+		resources.ErrorResponse(context, http.StatusBadRequest, e.INVALID_REQUEST)
 		return
 	}
 
-	context.JSON(http.StatusOK, gin.H{
-		"code": e.SUCCESS,
-		"msg": e.GetMsg(e.SUCCESS),
-	})
+	resources.SuccessResponse(context, e.GetMsg(e.SUCCESS))
 }
