@@ -18,5 +18,5 @@ func ArticleRouter(router *gin.RouterGroup) {
 	router.GET("/", articleController.GetPaginate)
 
 	// 刪除文章
-	router.DELETE("/:id", articleController.DeleteById)
+	router.DELETE("/:id", articleController.DeleteById).Use(middleware.VerifyToken)
 }

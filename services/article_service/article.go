@@ -1,6 +1,7 @@
 package article_service
 
 import (
+	"fmt"
 	"golang-gin-todolist/interfaces"
 	"golang-gin-todolist/models"
 	"golang-gin-todolist/pkg/util"
@@ -57,10 +58,14 @@ func (s *ArticleService) GetAll() ([]models.Article, error) {
 }
 
 // 根據編號刪除文章
-func (s *ArticleService) DeleteById(id string) error {
+func (s *ArticleService) DeleteById(userid int, id string) error {
 	article, err := s.articleRepository.GetById(id)
 	if err != nil {
 		return err
+	}
+
+	if article.UserId != userid {
+		return fmt.Errorf("not your article")
 	}
 
 	// 刪除文章

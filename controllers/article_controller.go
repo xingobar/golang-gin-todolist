@@ -128,7 +128,15 @@ func (c *articleController) GetAll(context *gin.Context) {
 }
 
 func (c *articleController) DeleteById(context *gin.Context) {
-	if err := c.service.DeleteById(context.Param("id")); err != nil {
+	accessDetail,err := jwt.ExtractTokenMetadata(context.Request)
+	if err != nil {
+		context.JSON(http.StatusUnauthorized, gin.H{
+			"code": e.TOKEN_ERROR,
+			"msg": e.GetMsg(e.TOKEN_ERROR),
+		})
+		return
+	}
+	if err := c.service.DeleteById(accessDetail.UserId ,context.Param("id")); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{
 			"code": e.INVALID_REQUEST,
 			"msg": e.GetMsg(e.INVALID_REQUEST),
