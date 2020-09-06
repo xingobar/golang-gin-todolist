@@ -2,13 +2,12 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator"
 	"golang-gin-todolist/jwt"
 	"golang-gin-todolist/models"
 	"golang-gin-todolist/pkg/e"
+	"golang-gin-todolist/resources"
 	"golang-gin-todolist/services/article_service"
 	"golang-gin-todolist/services/tag_service"
-	validation2 "golang-gin-todolist/validation"
 	article2 "golang-gin-todolist/validation/article"
 	"net/http"
 	"strconv"
@@ -30,20 +29,14 @@ func NewArticleController() *articleController{
 func (c *articleController) Create(context *gin.Context) {
 	var validation article2.CreateArticleValidation
 	if err := context.ShouldBind(&validation); err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{
-			"code": e.INVALID_REQUEST,
-			"msg": validation2.GetError(err.(validator.ValidationErrors), article2.Message),
-		})
+		resources.NoValidResponse(context, err,  article2.Message)
 		return
 	}
 
 	// 取得 token 的 userid 資訊
 	accessDetail, err := jwt.ExtractTokenMetadata(context.Request)
 	if err != nil {
-		context.JSON(http.StatusUnauthorized, gin.H{
-			"code": e.UNAUTHORIZED,
-			"msg": e.GetMsg(e.UNAUTHORIZED),
-		})
+		resources.ErrorResponse(context, http.StatusUnauthorized, e.UNAUTHORIZED)
 		return
 	}
 
@@ -58,41 +51,26 @@ func (c *articleController) Create(context *gin.Context) {
 
 	t := c.tagService.GetByIds(tags)
 	if len(tags) != len(t) {
-		context.JSON(http.StatusBadRequest, gin.H{
-			"code": e.INVALID_REQUEST,
-			"msg": e.GetMsg(e.INVALID_REQUEST),
-		})
+		resources.ErrorResponse(context, http.StatusBadRequest, e.INVALID_REQUEST)
 		return
 	}
 
 	if ok := c.service.Create(article, t); !ok {
-		context.JSON(http.StatusBadRequest, gin.H{
-			"code": e.INVALID_REQUEST,
-			"msg": e.GetMsg(e.INVALID_REQUEST),
-		})
+		resources.ErrorResponse(context, http.StatusBadRequest, e.INVALID_REQUEST)
 		return
 	}
-	context.JSON(http.StatusOK, gin.H{
-		"code": e.SUCCESS,
-		"msg": e.GetMsg(e.SUCCESS),
-	})
+	resources.SuccessResponse(context, e.GetMsg(e.SUCCESS))
 }
 
 func (c *articleController) GetById(context *gin.Context) {
 	article, err := c.service.GetById(context.Param("id"))
 
 	if err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{
-			"code": e.INVALID_REQUEST,
-			"msg": e.GetMsg(e.INVALID_REQUEST),
-		})
+		resources.ErrorResponse(context, http.StatusBadRequest, e.INVALID_REQUEST)
 		return
 	}
 
-	context.JSON(http.StatusOK, gin.H{
-		"code": e.SUCCESS,
-		"msg": article,
-	})
+	resources.SuccessResponse(context, article)
 }
 
 func (c *articleController) GetPaginate(ctx *gin.Context) {
@@ -103,10 +81,7 @@ func (c *articleController) GetPaginate(ctx *gin.Context) {
 	}
 	articles, err := c.service.GetPaginate(p)
 
-	ctx.JSON(http.StatusOK, gin.H{
-		"code": e.SUCCESS,
-		"msg": articles,
-	})
+	resources.SuccessResponse(ctx, articles)
 }
 
 // 取得所有文章
@@ -114,37 +89,23 @@ func (c *articleController) GetAll(context *gin.Context) {
 	articles, err := c.service.GetAll()
 
 	if err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{
-			"code": e.INVALID_REQUEST,
-			"msg": e.GetMsg(e.INVALID_REQUEST),
-		})
+		resources.ErrorResponse(context, http.StatusBadRequest, e.INVALID_REQUEST)
 		return
 	}
 
-	context.JSON(http.StatusOK, gin.H{
-		"code": e.SUCCESS,
-		"msg": articles,
-	})
+	resources.SuccessResponse(context, articles)
 }
 
 func (c *articleController) DeleteById(context *gin.Context) {
 	accessDetail,err := jwt.ExtractTokenMetadata(context.Request)
 	if err != nil {
-		context.JSON(http.StatusUnauthorized, gin.H{
-			"code": e.TOKEN_ERROR,
-			"msg": e.GetMsg(e.TOKEN_ERROR),
-		})
+		resources.ErrorResponse(context, http.StatusUnauthorized, e.TOKEN_ERROR)
 		return
 	}
 	if err := c.service.DeleteById(accessDetail.UserId ,context.Param("id")); err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{
-			"code": e.INVALID_REQUEST,
-			"msg": e.GetMsg(e.INVALID_REQUEST),
-		})
+		resources.ErrorResponse(context, http.StatusBadRequest, e.INVALID_REQUEST)
 		return
 	}
-	context.JSON(http.StatusOK, gin.H{
-		"code": e.SUCCESS,
-		"msg": e.GetMsg(e.SUCCESS),
-	})
+
+	resources.SuccessResponse(context, e.GetMsg(e.SUCCESS))
 }

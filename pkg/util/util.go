@@ -25,10 +25,10 @@ func Paginate(page int) func(db *gorm.DB) *gorm.DB {
 // 創建分頁
 func CreatePaginate(total int, data interface{}, page int) *Paginator {
 	return &Paginator{
-		Total: total,
-		Data: data,
-		TotalPage: total / setting.TWENTY_PAGE,
-		Page: page,
+		Total: total, // 總筆數
+		Data: data,	  // 資料
+		TotalPage: total / setting.TWENTY_PAGE, // 總頁碼
+		Page: page, // 目前頁碼
 	}
 }
 
