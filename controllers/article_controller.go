@@ -3,6 +3,7 @@ package controllers
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator"
+	"golang-gin-todolist/jwt"
 	"golang-gin-todolist/models"
 	"golang-gin-todolist/pkg/e"
 	"golang-gin-todolist/services/article_service"
@@ -36,12 +37,21 @@ func (c *articleController) Create(context *gin.Context) {
 		return
 	}
 
-	var article models.Article
+	// 取得 token 的 userid 資訊
+	accessDetail, err := jwt.ExtractTokenMetadata(context.Request)
+	if err != nil {
+		context.JSON(http.StatusUnauthorized, gin.H{
+			"code": e.UNAUTHORIZED,
+			"msg": e.GetMsg(e.UNAUTHORIZED),
+		})
+		return
+	}
 
+	var article models.Article
 	article = models.Article{
 		Title: context.PostForm("title"),
 		Content: context.PostForm("content"),
-		UserId: 1,
+		UserId: accessDetail.UserId,
 	}
 
 	tags := context.PostFormArray("tags[]")

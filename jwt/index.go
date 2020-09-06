@@ -19,6 +19,11 @@ type TokenDetails struct {
 	RefreshUid string	`json:"refresh_uid"`
 }
 
+type AccessDetails struct {
+	AccessUid string `json:"access_uid"`
+	UserId int `json:"user_id"`
+}
+
 // 產生 jwt token
 func CreateJwtToken(userid int) (*TokenDetails, error){
 
@@ -98,4 +103,32 @@ func ParseToken(r *http.Request) (*jwt.Token, error) {
 		return nil, err
 	}
 	return t, nil
+}
+
+// 取得 jwt claims 資料
+func ExtractTokenMetadata(r *http.Request) (*AccessDetails, error) {
+	token, err := ParseToken(r)
+	if err != nil {
+		return nil, err
+	}
+	claims, ok := token.Claims.(jwt.MapClaims)
+
+	if ok && token.Valid {
+		accessUid, ok := claims["access_uid"].(string)
+		if !ok {
+			return nil, err
+		}
+
+		userId, ok := claims["user_id"].(float64)
+		if !ok {
+			return nil, fmt.Errorf("parse error")
+		}
+		//fmt.Println(reflect.TypeOf(claims["user_id"]))
+
+		return &AccessDetails{
+			AccessUid: accessUid,
+			UserId: int(userId),
+		}, nil
+	}
+	return nil, err
 }
