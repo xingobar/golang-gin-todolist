@@ -6,10 +6,18 @@ import (
 	"golang-gin-todolist/middleware"
 )
 
-func ArticleRouter(router *gin.RouterGroup) {
+func AuthArticleRouter(router *gin.RouterGroup) {
 	articleController := controllers.NewArticleController()
+	router.Use(middleware.VerifyToken)
 	// 新增文章
 	router.POST("/create", articleController.Create).Use(middleware.VerifyToken)
+
+	// 刪除文章
+	router.DELETE("/:id", articleController.DeleteById).Use(middleware.VerifyToken)
+}
+
+func ArticleRouter(router *gin.RouterGroup) {
+	articleController := controllers.NewArticleController()
 
 	// 取得文章
 	router.GET("/edit/:id", articleController.GetById)
@@ -17,6 +25,4 @@ func ArticleRouter(router *gin.RouterGroup) {
 	// 取得所有文章
 	router.GET("/", articleController.GetPaginate)
 
-	// 刪除文章
-	router.DELETE("/:id", articleController.DeleteById).Use(middleware.VerifyToken)
 }

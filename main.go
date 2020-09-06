@@ -39,9 +39,11 @@ func main() {
 	router.TagRouter(tags)
 
 	// 文章
-	articles := r.Group("/article")
-	//articles.Use(middleware.VerifyToken)
-	router.ArticleRouter(articles)
+	// 要授權才能對文章操作
+	router.AuthArticleRouter(r.Group("/article"))
+
+	// 不用授權就可以讀取
+	router.ArticleRouter(r.Group("/article"))
 
 	// 會員資訊
 	users := r.Group("/users")
