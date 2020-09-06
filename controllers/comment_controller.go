@@ -35,6 +35,7 @@ func (c *commentController) Create(ctx *gin.Context){
 		return
 	}
 
+	// 父留言編號
 	parentId := ctx.DefaultPostForm("parent_id", "0")
 	pid, err := strconv.Atoi(parentId)
 	if err != nil {
@@ -53,6 +54,18 @@ func (c *commentController) Create(ctx *gin.Context){
 	}
 
 	// TODO: 留言的UserId 要改
+	//var comment models.Comment
+	//b := new(bytes.Buffer)
+	//json.NewEncoder(b).Encode(v)
+	//err = json.Unmarshal(b.Bytes(), &comment)
+	//if err != nil {
+	//	ctx.JSON(http.StatusBadRequest, gin.H{
+	//		"code": e.INVALID_REQUEST,
+	//		"msg": e.GetMsg(e.INVALID_REQUEST),
+	//	})
+	//	return
+	//}
+	//comment.UserId = 1
 	comment := models.Comment{
 		Content: v.Content,
 		ParentId: uint(pid),
