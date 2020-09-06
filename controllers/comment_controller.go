@@ -55,7 +55,7 @@ func (c *commentController) Create(ctx *gin.Context){
 	// TODO: 留言的UserId 要改
 	comment := models.Comment{
 		Content: v.Content,
-		ParentId:v.ParentId,
+		ParentId: uint(pid),
 		ArticleId: v.ArticleId,
 		UserId: 1,
 	}

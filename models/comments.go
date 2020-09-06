@@ -30,6 +30,6 @@ func GetParentComment() func(db *gorm.DB) *gorm.DB {
 
 func GetChildComment() func(db *gorm.DB) *gorm.DB {
 	return func(db *gorm.DB) *gorm.DB {
-		return db.Preload("Children")
+		return db.Where("parent_id = 0").Preload("Children")
 	}
 }
