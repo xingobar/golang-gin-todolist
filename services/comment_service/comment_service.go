@@ -33,3 +33,13 @@ func (c *CommentService) Create(comment models.Comment) bool{
 	}
 	return true
 }
+
+// 取得子留言
+func (c *CommentService) GetChildComment(id uint) ([]models.Comment, error) {
+	var comments []models.Comment
+
+	if err := models.Db.Where("parent_id = ?", id).Find(&comments).Error; err != nil {
+		return nil, err
+	}
+	return comments, nil
+}

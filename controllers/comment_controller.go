@@ -75,3 +75,38 @@ func (c *commentController) Create(ctx *gin.Context){
 		"msg": e.GetMsg(e.SUCCESS),
 	})
 }
+
+// 取得子留言
+func (c *commentController) GetChildCommentById(ctx *gin.Context) {
+	id := ctx.Param("id")
+	parentId, err := strconv.Atoi(id)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"code": e.INVALID_REQUEST,
+			"msg": e.GetMsg(e.INVALID_REQUEST),
+		})
+		return
+	}
+
+	if ok := c.service.CheckParentExists(uint(parentId)); !ok {
+		ctx.JSON(http.StatusNotFound, gin.H{
+			"code": e.PARENT_COMMENT_NOT_EXISTS,
+			"msg": e.GetMsg(e.PARENT_COMMENT_NOT_EXISTS),
+		})
+		return
+	}
+
+	data, err := c.service.GetChildComment(uint(parentId))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"code": e.INVALID_REQUEST,
+			"msg": e.GetMsg(e.INVALID_REQUEST),
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"code": e.SUCCESS,
+		"msg": data,
+	})
+}

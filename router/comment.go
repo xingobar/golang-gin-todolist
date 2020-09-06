@@ -10,4 +10,7 @@ func CommentRouter(group *gin.RouterGroup) {
 
 	// 新增留言
 	group.POST("/", commentController.Create)
+
+	// 取得子留言
+	group.GET("/:id", commentController.GetChildCommentById)
 }
