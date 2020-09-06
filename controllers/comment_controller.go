@@ -3,6 +3,7 @@ package controllers
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator"
+	"golang-gin-todolist/jwt"
 	"golang-gin-todolist/models"
 	"golang-gin-todolist/pkg/e"
 	"golang-gin-todolist/services/comment_service"
@@ -53,6 +54,16 @@ func (c *commentController) Create(ctx *gin.Context){
 		}
 	}
 
+
+	accessDetail, err := jwt.ExtractTokenMetadata(ctx.Request)
+	if err != nil {
+		ctx.JSON(http.StatusUnauthorized, gin.H{
+			"code": e.UNAUTHORIZED,
+			"msg": e.GetMsg(e.UNAUTHORIZED),
+		})
+		return
+	}
+
 	// TODO: 留言的UserId 要改
 	//var comment models.Comment
 	//b := new(bytes.Buffer)
@@ -68,9 +79,9 @@ func (c *commentController) Create(ctx *gin.Context){
 	//comment.UserId = 1
 	comment := models.Comment{
 		Content: v.Content,
-		ParentId: uint(pid),
+		ParentId: pid,
 		ArticleId: v.ArticleId,
-		UserId: 1,
+		UserId: accessDetail.UserId,
 	}
 
 	if ok := c.service.Create(comment); !ok {
