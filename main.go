@@ -47,6 +47,10 @@ func main() {
 	users := r.Group("/users")
 	router.UserRouter(users)
 
+	// 留言
+	comments := r.Group("/comments")
+	router.CommentRouter(comments)
+
 	// refresh 重新取得 token
 	r.POST("/refresh", Refresh)
 

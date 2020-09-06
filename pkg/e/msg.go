@@ -13,6 +13,7 @@ var MsgFiles = map[int]string {
 	CACHE_ERROR: "快取錯誤",
 	REFRESH_EXPIRED: "Refresh token 過期",
 	REFRESH_UNUSED: "Refresh Unused",
+	PARENT_COMMENT_NOT_EXISTS: "父留言不存在",
 }
 
 func GetMsg(code int) string {
