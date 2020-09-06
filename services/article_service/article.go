@@ -64,6 +64,7 @@ func (s *ArticleService) DeleteById(userid int, id string) error {
 		return err
 	}
 
+	// 判斷是不是你的文章
 	if article.UserId != userid {
 		return fmt.Errorf("not your article")
 	}
