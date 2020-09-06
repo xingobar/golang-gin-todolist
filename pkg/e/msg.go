@@ -14,6 +14,7 @@ var MsgFiles = map[int]string {
 	REFRESH_EXPIRED: "Refresh token 過期",
 	REFRESH_UNUSED: "Refresh Unused",
 	PARENT_COMMENT_NOT_EXISTS: "父留言不存在",
+	NOT_FOUND: "找不到資料",
 }
 
 func GetMsg(code int) string {

@@ -134,3 +134,77 @@ func (c *commentController) GetChildCommentById(ctx *gin.Context) {
 		"msg": data,
 	})
 }
+
+func (c *commentController) DeleteById(ctx *gin.Context) {
+	id := ctx.Param("id")
+
+	value, err := strconv.Atoi(id)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"code": e.INVALID_REQUEST,
+			"msg": e.GetMsg(e.INVALID_REQUEST),
+		})
+		return
+	}
+
+	accessDetail, err := jwt.ExtractTokenMetadata(ctx.Request)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"code": e.TOKEN_ERROR,
+			"msg": e.GetMsg(e.TOKEN_ERROR),
+		})
+		return
+	}
+
+	comment, err := c.service.GetById(value)
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{
+			"code": e.NOT_FOUND,
+			"msg": e.GetMsg(e.NOT_FOUND),
+		})
+		return
+	}
+
+	// 不是該會員的文章
+	if accessDetail.UserId != comment.UserId {
+		ctx.JSON(http.StatusUnauthorized, gin.H{
+			"code": e.UNAUTHORIZED,
+			"msg": e.GetMsg(e.UNAUTHORIZED),
+		})
+		return
+	}
+
+	if comment.ParentId == 0 {
+		_, err := c.service.DeleteParentById(*comment)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"code": e.INVALID_REQUEST,
+				"msg": e.GetMsg(e.INVALID_REQUEST),
+			})
+			return
+		}
+	} else {
+		// 單純子留言
+		ok, err := c.service.DeleteChildById(int(comment.ID))
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"code": e.INVALID_REQUEST,
+				"msg": e.GetMsg(e.INVALID_REQUEST),
+			})
+			return
+		}
+
+		if !ok {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"code": e.INVALID_REQUEST,
+				"msg": e.GetMsg(e.INVALID_REQUEST),
+			})
+			return
+		}
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"code": e.SUCCESS,
+		"msg": e.GetMsg(e.SUCCESS),
+	})
+}

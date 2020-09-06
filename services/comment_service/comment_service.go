@@ -43,3 +43,33 @@ func (c *CommentService) GetChildComment(id uint) ([]models.Comment, error) {
 	}
 	return comments, nil
 }
+
+// 取得留言
+func (c *CommentService) GetById(id int) (*models.Comment, error){
+	var comment models.Comment
+	if err := models.Db.Where("id = ? ", id).First(&comment).Error; err != nil {
+		return nil, err
+	}
+	return &comment, nil
+}
+
+// 刪除子留言
+func (c *CommentService) DeleteChildById(id int) (bool, error) {
+	if err := models.Db.Where("id = ?", id).Delete(&models.Comment{}).Error; err != nil {
+		return false, err
+	}
+	return true, nil
+}
+
+// 刪除文章
+func (c *CommentService) DeleteParentById(comment models.Comment) (bool, error) {
+	if err := models.Db.Where("id = ? or parent_id = ?",
+								comment.ID,
+								comment.ID).
+				Delete(&models.Comment{}).
+				Delete(&models.Comment{}).
+				Error; err != nil {
+		return false, err
+	}
+	return true, nil
+}

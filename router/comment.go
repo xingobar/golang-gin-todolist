@@ -15,7 +15,12 @@ func CommentRouter(group *gin.RouterGroup) {
 // 要授權才能對操作留言
 func AuthCommentRouter(group *gin.RouterGroup) {
 	commentController := controllers.NewCommentController()
-	// 新增留言
-	group.POST("/", commentController.Create).Use(middleware.VerifyToken)
 
+	group.Use(middleware.VerifyToken)
+
+	// 新增留言
+	group.POST("/", commentController.Create)
+
+	// 刪除留言
+	group.DELETE("/:id", commentController.DeleteById)
 }
