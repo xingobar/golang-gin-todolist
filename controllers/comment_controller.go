@@ -175,6 +175,7 @@ func (c *commentController) DeleteById(ctx *gin.Context) {
 	}
 
 	if comment.ParentId == 0 {
+		// 父留言要連同子留言一同刪除
 		_, err := c.service.DeleteParentById(*comment)
 		if err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{
