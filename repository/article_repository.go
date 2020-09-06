@@ -30,7 +30,7 @@ func (repository *articleRepository) GetById(id string) (*models.Article, error)
 	var article models.Article
 	if err := models.Db.Preload("Tags").
 					    Preload("User").
-						Preload("Comments", "parent_id IS NULL").
+						Preload("Comments", models.GetChildComment()).
 						Where("id = ?", id).First(&article).Error; err != nil {
 		return nil, err
 	}

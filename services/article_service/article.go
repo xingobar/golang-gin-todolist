@@ -33,11 +33,6 @@ func (s *ArticleService) GetById(id string) (*models.Article, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	// 子留言
-	for key,comment := range article.Comments {
-		models.Db.Where("parent_id = ?", comment.ID).Find(&article.Comments[key].Children)
-	}
 	return article, nil
 }
 
