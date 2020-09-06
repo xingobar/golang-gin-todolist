@@ -50,8 +50,8 @@ func main() {
 	router.UserRouter(users)
 
 	// 留言
-	comments := r.Group("/comments")
-	router.CommentRouter(comments)
+	router.CommentRouter(r.Group("/comments"))
+	router.AuthCommentRouter(r.Group("/comments"))
 
 	// refresh 重新取得 token
 	r.POST("/refresh", Refresh)
