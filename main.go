@@ -12,6 +12,7 @@ import (
 	"golang-gin-todolist/pkg/e"
 	"golang-gin-todolist/resources"
 	"golang-gin-todolist/router"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -22,6 +23,13 @@ import (
 func main() {
 	r := gin.Default()
 	r.Use(middleware.LoggerToFile)
+
+	// 設定log
+	f, _ := os.Create("./log/info.log")
+	e, _ := os.Create("./log/error.log")
+	gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
+	gin.DefaultErrorWriter = io.MultiWriter(e, os.Stdout)
+
 
 	err := godotenv.Load()
 	if err != nil {
