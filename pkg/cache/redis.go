@@ -6,6 +6,7 @@ import (
 	"golang-gin-todolist/jwt"
 	"log"
 	"os"
+	"reflect"
 	"strconv"
 	"time"
 )
@@ -38,4 +39,53 @@ func SetTokenCache(userid int, td *jwt.TokenDetails) error {
 		return err
 	}
 	return nil
+}
+
+type ConsumeFunc func(channel string, message []byte) error
+
+func Publish(channel string, message string ) (int, error){
+	n, err := redis.Int(Redis.Do("PUBLISH", channel, message))
+	if err != nil {
+		return 0, fmt.Errorf("redis publish %s %s, err: %v", channel, message, err)
+	}
+	return n, nil
+}
+
+func Subscribe(consume ConsumeFunc, channel ...string) error {
+	psc := redis.PubSubConn{Conn: Redis}
+
+	if err := psc.Subscribe(redis.Args{}.AddFlat(channel)...); err != nil {
+		return err
+	}
+
+	done := make(chan error, 1)
+
+	go func() {
+		defer psc.Close()
+		for  {
+			fmt.Println(reflect.TypeOf(psc.Receive()))
+			switch msg := psc.Receive().(type) {
+				case error:
+					done <- fmt.Errorf("redis pubsub receive error : %v", msg)
+					return
+				case redis.Message:
+					fmt.Println("channel: ", msg.Channel)
+					fmt.Println("msg: ", string(msg.Data))
+					return
+				case redis.Subscription:
+					if msg.Count == 0 {
+						done <- nil
+						return
+					}
+
+			}
+		}
+	}()
+
+
+	ticker := time.NewTicker(time.Minute)
+	defer ticker.Stop()
+
+	// Wait for goroutine to complete.
+	return <-done
 }
