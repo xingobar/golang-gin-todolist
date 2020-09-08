@@ -20,3 +20,6 @@ JWT 參考資源:
 Log 參考資源:
 1. https://www.cnblogs.com/xinliangcoder/p/11212573.html
 2. https://mojotv.cn/2018/12/27/golang-logrus-tutorial
+
+Redis pubsub
+1. https://www.twblogs.net/a/5d0f11d7bd9eee1e5c81d10e
